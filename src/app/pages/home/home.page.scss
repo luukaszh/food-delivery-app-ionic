@@ -1,0 +1,75 @@
+    .food-list {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 0;
+    max-height: 80vh; /* Ustaw maksymalną wysokość kontenera */
+    overflow-y: auto; /* Ustaw pionowy pasek przewijania */
+    }
+
+
+    .food-list::-webkit-scrollbar {
+    width: 10px; /* Szerokość paska przewijania */
+    }
+
+    /* Kolor samego paska przewijania */
+    .food-list::-webkit-scrollbar-thumb {
+    background-color: #fe7240; /* Kolor paska przewijania */
+    border-radius: 5px; /* Zaokrąglenie rogów */
+    }
+
+    /* Kolor tła obszaru paska przewijania */
+    .food-list::-webkit-scrollbar-track {
+    background-color: #f1f1f1; /* Kolor tła obszaru paska przewijania */
+    }
+  
+    .food-item {
+    flex: 1 1 30%;
+    margin: 0.5rem;
+    }
+
+    .food-link {
+    border: 2px solid #f87f54;
+    margin: 0.53rem;
+    display: flex;
+    flex-direction: column;
+    color: whitesmoke;
+    text-decoration: none;
+    box-shadow: 0 0 0.3rem black;
+    font-size: 1.2rem;
+    background-color: #f87f54;
+    transition: transform 0.3s; /* Dodanie efektu przejścia */
+    }
+    
+    .food-link:hover {
+    cursor: pointer;
+    transform: scale(1.05); /* Powiększenie elementu o 5% */
+    }
+
+    .food-image {
+    width: 100%;
+    }
+
+    .name {
+    font-weight: bold;
+    }
+
+    .cook-time,
+    .price {
+    color: whitesmoke;
+    font-size: 1rem;
+    margin-top: 0.7rem;
+    }
+
+    @media screen and (max-width: 768px) {
+    .food-item {
+        flex-basis: 45%;
+    }
+    }
+
+    @media screen and (max-width: 480px) {
+    .food-item {
+        flex-basis: 100%;
+    }
+    }
+  

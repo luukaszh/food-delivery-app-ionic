@@ -1,0 +1,49 @@
+<!-- <ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">login</ion-title>
+    </ion-toolbar>
+  </ion-header>
+</ion-content> -->
+
+<ion-card>
+  <ion-card-content>
+    <div class="header">
+      <h2>LOGIN</h2>
+    </div>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+      <div class="error" *ngIf="loginForm.get('email')?.errors && isSubmit">
+        <!-- <div *ngIf="loginForm.get('email')?.errors.required">Required value</div>
+        <div *ngIf="loginForm.get('email')?.errors?.email">Email is invalid</div> -->
+      </div>
+      <div class="email-input">
+        <ion-item>
+          <ion-label position="floating">Email</ion-label>
+          <ion-input type="email" placeholder="Email" formControlName="email"></ion-input>
+        </ion-item>
+      </div>
+
+      <div class="error" *ngIf="loginForm.get('password')?.errors && isSubmit">
+        <!-- <div *ngIf="loginForm.get('password')?.errors.required">Required value</div> -->
+      </div>
+      <div class="password-input">
+        <ion-item>
+          <ion-label position="floating">Password</ion-label>
+          <ion-input type="password" placeholder="Password" formControlName="password"></ion-input>
+        </ion-item>
+      </div>
+
+      <div class="submit-button">
+        <ion-button expand="block" color="primary" (click)="onSubmit()">Login</ion-button>
+      </div>
+
+    </form>
+  </ion-card-content>
+</ion-card>

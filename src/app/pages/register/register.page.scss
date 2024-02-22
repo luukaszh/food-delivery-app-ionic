@@ -1,0 +1,24 @@
+/* Dostosuj styl karty */
+ion-card {
+    max-width: 400px; /* Ustaw maksymalną szerokość karty */
+    margin: auto; /* Wycentruj kartę na środku */
+  }
+  
+  /* Dostosuj styl nagłówka */
+  .header {
+    text-align: center; /* Wyśrodkuj tytuł */
+    margin-bottom: 20px; /* Dodaj odstęp na dole */
+  }
+  
+  /* Dostosuj odstęp między polami */
+  .name-input,
+  .email-input,
+  .password-input {
+    margin-bottom: 20px; /* Dodaj odstęp między inputami */
+  }
+  
+  /* Dostosuj odstęp na górze przycisku */
+  .submit-button ion-button {
+    margin-top: 20px; /* Dodaj odstęp na górze przycisku */
+  }
+  

@@ -1,0 +1,40 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Menu</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<app-search (searchTextChanged)="onSearch($event)" ></app-search>
+
+<ion-grid> <!-- Dodanie Ionic Grid -->
+  <ion-row>
+    <ion-col size="12"> <!-- Ustawienie szerokości kolumny na 12 (pełna szerokość) -->
+      <ion-list class="food-list">
+        <ion-item *ngFor="let food of foods" class="food-item" lines="none">
+          <ng-container *ngIf="searchText === '' || food.name.toLowerCase().includes(searchText)">
+            <ion-router-link [routerLink]="'/food/' + food.id" class="food-link">
+              <img [src]="food.imageurl" class="food-image"/>
+              <ion-label class="content">
+                <h2 class="name">{{food.name}}</h2>
+                <div class="product-item-footer">
+                  <div class="cook-time">
+                    <ion-icon name="timer" style="font-size: 1.4rem"></ion-icon>
+                    {{food.cooktime}} min
+                  </div>
+                  <div class="price">
+                    {{food.price | currency}}
+                  </div>
+                </div>
+              </ion-label>
+            </ion-router-link>
+          </ng-container>
+        </ion-item>
+      </ion-list>
+    </ion-col>
+  </ion-row>
+</ion-grid> <!-- Zamknięcie Ionic Grid -->
+
+<!-- Pozostała część Twojego CSS tutaj -->
