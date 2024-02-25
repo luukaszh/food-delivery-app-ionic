@@ -3,7 +3,9 @@
     <ion-menu contentId="main-content" type="overlay">
       <ion-content>
         <ion-list id="inbox-list">
-          <ion-list-header><ion-icon name="pizza-outline" ></ion-icon>Pizza Delivery</ion-list-header>
+          <ion-list-header>
+          <img class="image-logo" src="/assets/logo.jpg">
+          </ion-list-header>
           <ion-note *ngIf="user.token">Welcome <span class="user-name">{{user.name}}</span></ion-note>
 
           <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
