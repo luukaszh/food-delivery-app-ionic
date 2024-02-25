@@ -25,9 +25,17 @@ export class CartService {
     private router: Router
   ) { }
 
-  addItemToCart(food: Food): void{
-    this.cart.items.push(new CartItem(food))
-    this.setToCartStorage()
+  addItemToCart(food: Food): void {
+    const existingItem = this.cart.items.find(item => item.food.id === food.id);
+  
+    if (existingItem) {
+      existingItem.quantity++;
+      existingItem.price = existingItem.quantity * food.price;
+    } else {
+      this.cart.items.push(new CartItem(food));
+    }
+  
+    this.setToCartStorage();
   }
 
   removeItemFromCart(foodId: string): void{

@@ -101,14 +101,14 @@ app.post('/users/register', (req, res) => {
   client.query(`SELECT * FROM users WHERE email = $1`, [email], (err, result) => {
     if (err) {
       console.error('Error querying users:', err);
-      return res.status(500).send('Internal Server Error');
+      return res.status(500).json({ message: 'Internal Server Error' }); // Zwracanie błędu w formacie JSON
     }
 
     const existingUser = result.rows[0];
 
     // Jeśli użytkownik już istnieje, zwróć odpowiedni kod odpowiedzi
     if (existingUser) {
-      return res.status(409).send('User already exists');
+      return res.status(409).json({ message: 'User already exists' }); // Zwracanie informacji w formacie JSON
     }
 
     // W przeciwnym razie, jeśli użytkownik nie istnieje, dodaj go do bazy danych
@@ -118,14 +118,15 @@ app.post('/users/register', (req, res) => {
     client.query(insertQuery, values, (err, result) => {
       if (err) {
         console.error('Error inserting user:', err);
-        return res.status(500).send('Internal Server Error');
+        return res.status(500).json({ message: 'Internal Server Error' }); // Zwracanie błędu w formacie JSON
       }
 
       console.log('User successfully registered:', name);
-      res.status(200).send('User registered successfully');
+      res.status(200).json({ message: 'User registered successfully' }); // Zwracanie informacji w formacie JSON
     });
   });
 });
+
 
 
 app.post('/orders', (req, res) => {
@@ -209,9 +210,9 @@ app.get('/examplefood', (req, res)=>{
 
 app.post('/food/add', (req, res) => {
   jwt.verify(token.token, 'secretKey', (err, authData) => {
-    if (err){
+    if (err) {
       res.status(403).send("You do not have permission!")
-    } else{
+    } else {
       const food = req.body;
 
       client.query(`SELECT id FROM food ORDER BY id`, (err, result) => {
@@ -227,8 +228,12 @@ app.post('/food/add', (req, res) => {
           nextId++;
         }
     
-        const insertQuery = `INSERT INTO food(id, name, price, cooktime, imageurl)
-                             VALUES('${nextId}', '${food.name}', '${food.price}', '${food.cooktime}', '${food.imageurl}')`;
+        // Użyj dynamicznego zapytania SQL, aby wstawić wszystkie kolumny, które przychodzą w danych
+        const columnNames = ['id', ...Object.keys(food)].join(', ');
+        const columnValues = [nextId, ...Object.values(food).map(value => typeof value === 'string' ? `'${value}'` : value)].join(', ');
+
+        const insertQuery = `INSERT INTO food(${columnNames})
+                             VALUES(${columnValues})`;
     
         client.query(insertQuery, (err, result) => {
           if (err) {
@@ -242,6 +247,7 @@ app.post('/food/add', (req, res) => {
     }
   });
 });
+
 
 
 

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
+import { ModalComponent } from 'src/app/components/modal/modal.component';
 import { FoodService } from 'src/app/services/food.service';
 import { Food } from 'src/app/shared/models/food';
 
@@ -15,7 +17,8 @@ export class HomePage implements OnInit {
   foodSubscription!: Subscription;
 
   constructor(
-    private foodService: FoodService
+    private foodService: FoodService,
+    private modalController: ModalController
   ) {
   }
 
@@ -34,5 +37,15 @@ export class HomePage implements OnInit {
 
   onSearch(searchValue: string) {
     this.searchText = searchValue.toLowerCase();
+  }
+
+  async presentModal(food: Food) {    
+    const modal = await this.modalController.create({
+      component: ModalComponent,
+      componentProps: {
+        foodData: food
+      }
+    });
+    return await modal.present();
   }
 }

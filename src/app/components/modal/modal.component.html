@@ -1,0 +1,38 @@
+<ion-header class="custom-header">
+  <ion-toolbar>
+    <ion-title>{{ foodData.name }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeModal()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="image-container">
+    <img class="image" [src]="foodData.imageurl" alt="">
+  </div>
+  <div class="description-container">
+    <div class="description">
+      <p class="description-p">
+        {{foodData.description}}
+      </p>
+    </div>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <div class="foot-container">
+    <div class="cook-time">
+      <!-- <ion-icon class="time-icon" name="timer" style="font-size: 1.4rem"></ion-icon> -->
+      <p class="cook-time-p">Time: {{foodData.cooktime}}</p>
+    </div>
+    <div class="add-button-container">
+      <ion-button class="add-button" color="primary" (click)="addToCart()">Add To Cart</ion-button>
+    </div>
+    <div class="price">
+      <p class="price-p">Price: {{foodData.price | currency}}</p>
+    </div>
+  </div>
+</ion-footer>

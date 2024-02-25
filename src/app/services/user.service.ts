@@ -68,7 +68,7 @@ export class UserService {
         next: async (user) => {
           this.userSubject.next(user);
           const toast = await this.toastController.create({
-            message: `Successful register! Welcome ${user.name}`,
+            message: `Successful register! Now you can Log in to Our App!`,
             duration: 3000,
             position: 'bottom'
           });
@@ -77,7 +77,7 @@ export class UserService {
         error: async (err) => {
           console.log('errrr', err);
           const toast = await this.toastController.create({
-            message: 'Register failed! Please try again later.',
+            message: 'Register failed!',
             duration: 5000,
             position: 'bottom'
           });

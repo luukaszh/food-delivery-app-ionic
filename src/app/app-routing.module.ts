@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { FoodPage } from './pages/food/food.page';
 
 const routes: Routes = [
   {
@@ -25,13 +24,13 @@ const routes: Routes = [
     loadChildren: () => import('./pages/register/register.module').then( m => m.RegisterPageModule)
   },
   {
-    path: 'food/:id',
-    loadChildren: () => import('./pages/food/food.module').then( m => m.FoodPageModule)
-  },
-  {
     path: 'cart',
     loadChildren: () => import('./pages/cart/cart.module').then( m => m.CartPageModule)
+  },  {
+    path: 'admin',
+    loadChildren: () => import('./pages/admin/admin.module').then( m => m.AdminPageModule)
   },
+
   // {
   //   path: 'food',
   //   component: FoodPage, // Użyj komponentu FoodPage jako widoku dla podstron żywnościowych

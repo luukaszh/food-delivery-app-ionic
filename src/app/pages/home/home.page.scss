@@ -1,36 +1,34 @@
-    .food-list {
+.food-list {
     display: flex;
-    align-items: center;
     flex-wrap: wrap;
-    padding: 0;
-    max-height: 80vh; /* Ustaw maksymalną wysokość kontenera */
-    overflow-y: auto; /* Ustaw pionowy pasek przewijania */
-    }
+    justify-content: center;
+    max-height: 80vh;
+    overflow-y: auto;
+    grid-auto-flow: dense;
+}
 
 
-    .food-list::-webkit-scrollbar {
-    width: 10px; /* Szerokość paska przewijania */
-    }
+.food-list::-webkit-scrollbar {
+    width: 10px;
+}
 
-    /* Kolor samego paska przewijania */
-    .food-list::-webkit-scrollbar-thumb {
-    background-color: #fe7240; /* Kolor paska przewijania */
-    border-radius: 5px; /* Zaokrąglenie rogów */
-    }
+.food-list::-webkit-scrollbar-thumb {
+    background-color: #fe7240;
+    border-radius: 5px;
+}
 
-    /* Kolor tła obszaru paska przewijania */
-    .food-list::-webkit-scrollbar-track {
-    background-color: #f1f1f1; /* Kolor tła obszaru paska przewijania */
-    }
-  
-    .food-item {
-    flex: 1 1 30%;
+.food-list::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+}
+
+.food-item {
     margin: 0.5rem;
-    }
+}
 
-    .food-link {
+.food-link {
     border: 2px solid #f87f54;
     margin: 0.53rem;
+    width: 20rem;
     display: flex;
     flex-direction: column;
     color: whitesmoke;
@@ -38,38 +36,37 @@
     box-shadow: 0 0 0.3rem black;
     font-size: 1.2rem;
     background-color: #f87f54;
-    transition: transform 0.3s; /* Dodanie efektu przejścia */
-    }
-    
-    .food-link:hover {
+    transition: transform 0.3s;
+}
+
+.food-link:hover {
     cursor: pointer;
-    transform: scale(1.05); /* Powiększenie elementu o 5% */
-    }
+    transform: scale(1.03);
+}
 
-    .food-image {
+.food-image {
     width: 100%;
-    }
+}
 
-    .name {
+.name {
     font-weight: bold;
-    }
+}
 
-    .cook-time,
-    .price {
+.cook-time,
+.price {
     color: whitesmoke;
     font-size: 1rem;
     margin-top: 0.7rem;
-    }
+}
 
-    @media screen and (max-width: 768px) {
+@media screen and (max-width: 768px) {
     .food-item {
         flex-basis: 45%;
     }
-    }
+}
 
-    @media screen and (max-width: 480px) {
+@media screen and (max-width: 480px) {
     .food-item {
         flex-basis: 100%;
     }
-    }
-  
+}

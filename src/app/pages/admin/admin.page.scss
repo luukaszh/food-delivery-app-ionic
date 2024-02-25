@@ -1,0 +1,30 @@
+ion-card{
+    max-width: 25rem;
+    margin: 2rem auto;
+    text-align: center;
+    max-height: 99rem;
+    color: #fe7240;
+  }
+.subbmit-button-add {
+    padding-top: 15px;
+}
+
+.subbmit-button-add:hover{
+    opacity: 0.7;
+    }
+
+.subbmit-button-delete {
+    padding-top: 15px;
+}
+
+.subbmit-button-delete:hover{
+    opacity: 0.8;
+    }
+  
+.ion-select-del-food {
+    display: inline-block;
+}
+
+.ion-label-del-food{
+    display: inline-block;
+}

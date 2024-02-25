@@ -1,29 +1,48 @@
 <ion-content class="container">
-  <ion-list>
-    <ion-item *ngFor="let cartItem of cart.items">
-      <ion-thumbnail slot="start">
-        <img [src]="cartItem.food.imageurl">
-      </ion-thumbnail>
-      <ion-label>
-        <h2 class="name">{{ cartItem.food.name }}</h2>
-        <ion-select #quantitySelect [value]="cartItem.quantity" (ionChange)="changeCartQuantity(cartItem, quantitySelect.value)">
-          <ion-select-option value="1">1</ion-select-option>
-          <ion-select-option value="2">2</ion-select-option>
-          <ion-select-option value="3">3</ion-select-option>
-          <ion-select-option value="4">4</ion-select-option>
-          <ion-select-option value="5">5</ion-select-option>
-        </ion-select>
-        <p class="price">{{ cartItem.price | currency }}</p>
-      </ion-label>
-      <ion-button class="remove-button" color="danger" (click)="removeItemFromCart(cartItem)">Remove</ion-button>
-    </ion-item>
-  </ion-list>
+  <ion-header [translucent]="true">
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title>Cart</ion-title>
+    </ion-toolbar>
+  </ion-header>
 
-  <div class="checkout">
-    <div>
-      <p class="total-price">{{ cart.totalPrice | currency }}</p>
+  <ng-container *ngIf="cart.totalCount < 1; else cartNotEmpty">
+    <div class="empty-text-container">
+      <h1>Cart is empty</h1>
     </div>
-    <ion-button class="checkout-button" color="secondary" routerLink="/checkout">Checkout</ion-button>
-    <ion-button class="clear-button" color="primary" (click)="clearCart()">Clear</ion-button>
-  </div>
+  </ng-container>
+  
+  <ng-template #cartNotEmpty>
+    <ion-list>
+      <ion-item *ngFor="let cartItem of cart.items">
+        <ion-thumbnail slot="start">
+          <img class="image" [src]="cartItem.food.imageurl">
+        </ion-thumbnail>
+        <ion-label>
+          <h1 class="name">{{ cartItem.food.name }}</h1>
+          <ion-item class="ion-item-select" lines="none">
+            <ion-select class="ion-select" [(ngModel)]="cartItem.quantity" (ionChange)="changeCartQuantity(cartItem, cartItem.quantity)">
+              <ion-select-option [value]="1">1</ion-select-option>
+              <ion-select-option [value]="2">2</ion-select-option>
+              <ion-select-option [value]="3">3</ion-select-option>
+              <ion-select-option [value]="4">4</ion-select-option>
+              <ion-select-option [value]="5">5</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <p class="price">{{ cartItem.price | currency }}</p>
+        </ion-label>
+        <ion-icon class="trash-icon" name="trash" style="font-size: 2rem" color="danger" (click)="removeItemFromCart(cartItem)"></ion-icon>
+      </ion-item>    
+    </ion-list>
+
+    <div class="checkout">
+      <div class="checkout-clear-container">
+        <ion-button class="checkout-button" color="primary" routerLink="/checkout">Checkout</ion-button>
+        <ion-button class="clear-button" color="medium" (click)="clearCart()">Clear</ion-button>
+        <div class="total-price">Sum: {{ cart.totalPrice | currency }}</div>
+      </div>
+    </div>
+  </ng-template>
 </ion-content>

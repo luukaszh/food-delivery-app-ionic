@@ -11,15 +11,15 @@ import { CartItem } from 'src/app/shared/models/cartItem';
 })
 export class CartPage implements OnInit {
 
-  cart!: Cart;
   cartSubscription: Subscription | undefined;
+  cart!: Cart;
 
-  constructor(private cartService: CartService) { }
+  constructor(private cartService: CartService) {}
 
   ngOnInit(): void {
     this.cartSubscription = this.cartService.getCartObservable().subscribe((cart) => {
       this.cart = cart;
-    });
+    });        
   }
 
   ngOnDestroy(): void {
@@ -36,8 +36,8 @@ export class CartPage implements OnInit {
     this.cartService.clearCart();
   }
 
-  changeCartQuantity(cartItem: CartItem, quantityInString: string): void {
-    const quantity = parseInt(quantityInString);
+  changeCartQuantity(cartItem: CartItem, quantityInString: number): void {
+    const quantity = quantityInString;
     this.cartService.changeCartQuantity(cartItem.food.id, quantity);
   }
 }

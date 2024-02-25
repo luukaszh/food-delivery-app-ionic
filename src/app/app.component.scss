@@ -143,3 +143,36 @@ ion-list-header ion-icon {
 ion-list-header {
   color: rgb(95, 95, 95);
 }
+
+.cart-container{
+  position: relative;
+  padding-right: 8px;
+  padding-top: 8px;
+}
+
+.cart-count-container{
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  background-color: rgb(200, 0, 0);
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  padding-left: 6px;
+  padding-right: 6px;
+  padding-top: 0.5px;
+  padding-bottom: 0.5px;
+  border-radius: 15px;
+}
+
+.cart-icon {
+  font-size: 1.8rem;
+}
+
+.ion-label-cart {
+  padding-left: 17px;
+}
+
+ion-item{
+  padding-top: 10px;
+}

@@ -1,39 +1,51 @@
-.container {
-    padding: 16px;
+.empty-text-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 20px;
+}
+
+ion-thumbnail {
+  width: 20%;
+  height: 20%;
+  img {
+    border-radius: 10px;
   }
-  
-  .name {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 8px;
-  }
-  
-  .price {
-    font-size: 16px;
-    color: #666;
-  }
-  
-  .checkout {
-    margin-top: 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .total-price {
-    font-size: 20px;
-    font-weight: bold;
-  }
-  
-  .remove-button,
-  .checkout-button,
-  .clear-button {
-    margin-top: 8px;
-  }
-  
-  ion-button {
-    --border-radius: 20px;
-    --padding-start: 24px;
-    --padding-end: 24px;
-  }
-  
+}
+
+.total-price {
+  margin-left: 15px;
+  font-weight: bold;
+  color: rgb(56, 56, 56);
+}
+
+.price {
+  font-weight: bold;
+  font-size: 17px;
+  color: rgb(56, 56, 56);
+}
+
+.checkout-button {
+  padding: 0 15px; /* Shorter notation for padding */
+}
+
+.total-price {
+  float: right;
+  margin-right: 15px;
+  padding-top: 10px;
+  color: rgb(56, 56, 56);
+}
+
+.trash-icon:hover {
+  transform: scale(1.2);
+  transition: transform 0.2s ease;
+}
+
+/* Adjusting ion-select styles */
+.ion-item-select {
+  display: inline-block;
+}
+
+.ion-select {
+  font-size: 18px;
+}
