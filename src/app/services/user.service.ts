@@ -39,24 +39,11 @@ export class UserService {
           this.setUserToLocalStorage(user);
           this.userSubject.next(user);
 
-          const toast = await this.toastController.create({
-            message: `Successful login! Welcome ${user.name}`,
-            duration: 3000,
-            position: 'bottom'
-          });
-          toast.present();
-
-
           await this.router.navigateByUrl('/home');
           location.reload();
         },
         error: async (err) => {
-          const toast = await this.toastController.create({
-            message: 'Login failed! Please check your credentials.',
-            duration: 5000,
-            position: 'bottom'
-          });
-          toast.present();
+          console.error('Login error: ', err);
         }
       })
     );
@@ -75,7 +62,6 @@ export class UserService {
           toast.present();
         },
         error: async (err) => {
-          console.log('errrr', err);
           const toast = await this.toastController.create({
             message: 'Register failed!',
             duration: 5000,

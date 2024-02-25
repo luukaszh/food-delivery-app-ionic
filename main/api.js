@@ -43,23 +43,25 @@ app.get('/food/:id', (req, res)=>{
   client.end;
 })
 
-app.delete('/food/:id', (req, res)=> {
+app.delete('/food/:id', (req, res) => {
   jwt.verify(token.token, 'secretKey', (err, authData) => {
-    if (err && token.isadmin === false){
-      res.status(403).send("You do not have permission!")
-    } else{
-      let insertQuery = `delete from food where id=${req.params.id}`
-      // console.log(req.params.id)
-      client.query(insertQuery, (err, result)=>{
-        if(!err){
-          res.send('Deletion was successful')
+    if (err && token.isadmin === false) {
+      res.status(403).json({ message: "You do not have permission!" });
+    } else {
+      let insertQuery = `DELETE FROM food WHERE id=${req.params.id}`;
+      client.query(insertQuery, (err, result) => {
+        if (!err) {
+          res.status(200).json({ message: 'Deletion was successful' });
+        } else {
+          console.error(err.message);
+          res.status(500).json({ error: 'Internal Server Error' });
         }
-        else{ console.log(err.message) }
-      })
+      });
       client.end;
     }
   });
-})
+});
+
 
 app.get('/users', (req, res)=>{
   client.query(`Select * from users`, (err, result)=>{
@@ -172,42 +174,6 @@ app.get('/examplefood', (req, res)=>{
   });
 })
 
-// // const jwt = require('jsonwebtoken');
-
-// app.post('/food/add', (req, res) => {
-//   // const token = req.headers.authorization.split(' ')[1];
-
-//   // jwt.verify(token, 'secretKey', (err, authData) => {
-//   //   if (err || !authData.isadmin) {
-//   //     return res.status(403).send("You do not have permission!");
-//   //   }
-
-//     const food = req.body;
-
-//     client.query(`SELECT MAX(id) AS maxId FROM food`, (err, result) => {
-//       if (err) {
-//         console.log('Error:', err);
-//         return res.status(500).send(err.message);
-//       }
-    
-//       const maxId = result.rows[0].maxId;
-//       const nextId = maxId ? maxId + 1 : 1; // Zwiększ maksymalne id o 1, jeśli istnieje, lub zacznij od 1, jeśli nie
-    
-//       const insertQuery = `INSERT INTO food(id, name, price, cookTime, imageUrl)
-//                            VALUES('${nextId}', '${food.name}', '${food.price}', '${food.cookTime}', '${food.imageUrl}')`;
-    
-//       client.query(insertQuery, (err, result) => {
-//         if (err) {
-//           console.log('Error:', err);
-//           return res.status(500).send('Insertion was NOT successful: ' + err.message);
-//         }
-    
-//         res.send('Insertion was successful');
-//       });
-//     });
-//   });
-// // });
-
 app.post('/food/add', (req, res) => {
   jwt.verify(token.token, 'secretKey', (err, authData) => {
     if (err) {
@@ -240,7 +206,7 @@ app.post('/food/add', (req, res) => {
             console.log('Error:', err);
             return res.status(500).json({ error: 'Insertion was NOT successful: ' + err.message });
           }
-    
+          console.log('success');
           res.status(200).json({ message: 'Insertion was successful' });
         });
       });

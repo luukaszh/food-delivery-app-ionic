@@ -6,6 +6,7 @@ import { FoodAdd } from "../shared/interfaces/FoodAdd";
 import { FoodDelete } from "../shared/interfaces/foodDelete";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {Router} from "@angular/router";
+import { ToastController } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
@@ -21,64 +22,66 @@ export class FoodService {
   constructor(
     private httpClient: HttpClient,
     private matSnack: MatSnackBar,
+    private toastController: ToastController
   ) {
     this.foodObservable = this.foodSubject.asObservable();
   }
 
-  getAll(): Observable<Food[]> {
+  public getAll(): Observable<Food[]> {
     return this.httpClient.get<Food[]>(this.baseURL + '/food');
   }
 
-  addFood(foodAdd: FoodAdd): Observable<Food>{
+  public addFood(foodAdd: FoodAdd): Observable<Food>{
     console.log('foodSrv | addFood: ', foodAdd)
     return this.httpClient.post<Food>(this.baseURL + '/food/add', foodAdd).pipe(
       tap({
-        next: (food) =>{
+        next: async (food) =>{          
           this.foodSubject.next(food);
-          this.matSnack.open(JSON.stringify(food.name), 'Successful food added!',{
-            duration: 3000,
-            verticalPosition: "top",
-            horizontalPosition: "end",
+          const toast = await this.toastController.create({
+            message: `${foodAdd.name} added successfully!`,
+            duration: 2000,
+            position: 'bottom'
           });
-          window.location.reload()
+          toast.present();
         },
-        error: (err) => {
-          this.matSnack.open(JSON.stringify(err.error.text), 'Add food failed!',{
-            duration: 3000,
-            verticalPosition: "top",
-            horizontalPosition: "end",
-          });        }
+        error: async (err) => {
+          const toast = await this.toastController.create({
+            message: `${foodAdd.name} add failed!`,
+            duration: 2000,
+            position: 'bottom'
+          });
+          toast.present();
+        },
       })
     );
   }
 
-  deleteFood(foodDelete: FoodDelete): Subscription {
+  public deleteFood(foodDelete: FoodDelete): Subscription {
     return this.httpClient.delete<Food>(this.baseURL + '/food/' + foodDelete)
       .subscribe({
-        next: (food) => {
+        next: async (food) => {
           this.foodSubject.next(food);
-          this.matSnack.open(JSON.stringify(food.name), 'Successful food delete!',{
-            duration: 3000,
-            verticalPosition: "top",
-            horizontalPosition: "end",
+          const toast = await this.toastController.create({
+            message: `Removed successfully!`,
+            duration: 2000,
+            position: 'bottom'
           });
-          window.location.reload()
+          toast.present();
         },
-        error: (err) => {
-          this.matSnack.open(JSON.stringify(err.error.text), 'Delete food failed!',{
-            duration: 5000,
-            verticalPosition: "top",
-            horizontalPosition: "end",
+        error: async (err) => {
+          const toast = await this.toastController.create({
+            message: `Removed failed!`,
+            duration: 2000,
+            position: 'bottom'
           });
-        }
+          toast.present();
+        },
       })
   }
+  
 
-  getFoodById(foodId:string):Observable<Food>{    
-    console.log('res', foodId);
-    const res = this.httpClient.get<Food>(this.baseURL + '/food/' + foodId);
-    console.log('res', res);
-    
+  public getFoodById(foodId:string):Observable<Food>{    
+    const res = this.httpClient.get<Food>(this.baseURL + '/food/' + foodId);    
     return res;
   }
 }

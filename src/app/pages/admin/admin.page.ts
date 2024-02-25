@@ -37,14 +37,18 @@ export class AdminPage implements OnInit {
     this.getNewFoodFromObservable()
   }
 
-  public onSubmit() {
+  public onAddSubmit() {
     this.isSubmit = true;
-    if (this.addForm.invalid)
+    if (this.addForm.invalid) {
+      console.log('onSubmit invalid');
+      
       return;
-  
+    }
+    console.log('onSubmit tobeadd', this.addForm.value);
     this.foodService.addFood(this.addForm.value).subscribe(() => {
-      window.location.reload();
+      this.getNewFoodFromObservable()
     });
+    this.addForm.reset();
   }
 
   private initializeForm(): void {
@@ -57,8 +61,11 @@ export class AdminPage implements OnInit {
   
 
   public onDeleteSubmit(){
-      this.foodService.deleteFood(this.selected);
-      this.getNewFoodFromObservable()
+    if (!this.selected || typeof this.selected === 'undefined') {
+      return;
+    }
+    this.foodService.deleteFood(this.selected);
+    this.getNewFoodFromObservable()
   }
 
   private getNewFoodFromObservable(): void{

@@ -23,7 +23,7 @@
         </div>
   
         <div class="subbmit-button-add">
-          <ion-button color="primary" expand="block" (click)="onSubmit()">Add</ion-button>
+          <ion-button color="primary" expand="block" (click)="onAddSubmit()" [disabled]="this.addForm.invalid">Add</ion-button>
         </div>
   
       </form>
@@ -45,7 +45,7 @@
       </ion-item>
   
       <div class="subbmit-button-delete">
-        <ion-button color="primary" expand="block" (click)="onDeleteSubmit()">Delete</ion-button>
+        <ion-button color="primary" expand="block" (click)="onDeleteSubmit()" [disabled]="!selected">Delete</ion-button>
       </div>
   
     </ion-card-content>

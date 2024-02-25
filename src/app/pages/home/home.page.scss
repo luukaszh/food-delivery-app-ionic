@@ -50,13 +50,31 @@
 
 .name {
     font-weight: bold;
+    font-size: 25px;
+    padding-left: 5px;
 }
 
-.cook-time,
+.cook-time-container,
 .price {
     color: whitesmoke;
     font-size: 1rem;
-    margin-top: 0.7rem;
+    padding-left: 5px;
+    padding-top: 5px;
+    font-weight: bold;
+}
+
+.cook-time-container {
+    display: flex;
+    align-items: center;
+  }
+  
+.cook-time-img {
+    padding-right: 5px;
+}
+
+.cook-time-text{
+    display: inline-block;
+    padding-bottom: 4px;
 }
 
 @media screen and (max-width: 768px) {

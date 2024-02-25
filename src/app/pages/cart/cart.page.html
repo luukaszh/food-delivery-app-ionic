@@ -9,8 +9,13 @@
   </ion-header>
 
   <ng-container *ngIf="cart.totalCount < 1; else cartNotEmpty">
-    <div class="empty-text-container">
-      <h1>Cart is empty</h1>
+    <div class="empty-container">
+      <div class="empty-img-container">
+        <img class="image-logo" src="/assets/epty-cart.webp">
+      </div>
+      <div class="empty-text-container">
+        <h1>Cart is empty</h1>
+      </div>
     </div>
   </ng-container>
   
