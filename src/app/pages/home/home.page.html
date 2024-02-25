@@ -28,6 +28,7 @@
                 <div class="cook-time-text">
                   {{food.cooktime}}
                 </div>
+                <ion-icon class="bag-add-icon" name="bag-add" (click)="addToCart(food); $event.stopPropagation();"></ion-icon>
               </div>
             </div>
           </ion-label>

@@ -77,6 +77,21 @@
     padding-bottom: 4px;
 }
 
+.bag-add-icon {
+    margin-left: auto;
+    padding-right: 5px;
+    padding-bottom: 5px;
+    font-size: 30px;
+}
+
+.bag-add-icon {
+    transition: color 0.5s ease;
+}
+
+.bag-add-icon:hover {
+    color: green;
+}
+
 @media screen and (max-width: 768px) {
     .food-item {
         flex-basis: 45%;
