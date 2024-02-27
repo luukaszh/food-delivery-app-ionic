@@ -21,7 +21,6 @@ export class FoodService {
 
   constructor(
     private httpClient: HttpClient,
-    private matSnack: MatSnackBar,
     private toastController: ToastController
   ) {
     this.foodObservable = this.foodSubject.asObservable();

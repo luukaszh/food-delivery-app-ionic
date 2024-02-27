@@ -22,8 +22,8 @@ export class AdminPage implements OnInit {
   formFields: any[] = [
     { name: 'name', label: 'Name', type: 'text', placeholder: 'Name' },
     { name: 'price', label: 'Price', type: 'number', placeholder: 'Price' },
-    { name: 'cooktime', label: 'Cook time', type: 'text', placeholder: 'CookTime' },
-    { name: 'imageurl', label: 'Image Url', type: 'text', placeholder: 'ImageUrl' },
+    { name: 'cooktime', label: 'Cook time', type: 'text', placeholder: 'Cook time' },
+    { name: 'imageurl', label: 'Image url', type: 'text', placeholder: 'Image url' },
     { name: 'description', label: 'Description', type: 'text', placeholder: 'Description' }
   ];
 
