@@ -13,8 +13,10 @@ import { Router } from "@angular/router";
 })
 export class CartService {
 
+  // Initialize cart with data from local storage
   private cart: Cart = this.getFromStorage();
 
+  // Subject to handle cart changes
   private cartSubject: BehaviorSubject<Cart> = new BehaviorSubject(this.cart);
 
   baseURL = 'http://localhost:3300'
@@ -25,6 +27,7 @@ export class CartService {
     private router: Router
   ) { }
 
+  // Method to add item to cart
   addItemToCart(food: Food): void {
     const existingItem = this.cart.items.find(item => item.food.id === food.id);
 
@@ -38,37 +41,40 @@ export class CartService {
     this.setToCartStorage();
   }
 
+  // Method to remove item from cart
   removeItemFromCart(foodId: string): void {
     this.cart.items = this.cart.items.filter(item => item.food.id !== foodId);
-    this.setToCartStorage()
+    this.setToCartStorage();
     if (this.cart.totalCount === 0) {
       this.router.navigateByUrl('/');
     }
   }
 
+  // Method to change quantity of item in cart
   changeCartQuantity(foodId: string, quantity: number) {
     let cartItem = this.cart.items.find(item => item.food.id === foodId)
-    console.log('CartService|changeCartQuantity|cartItem:', cartItem);
 
     if (!cartItem) return;
 
     cartItem.quantity = quantity;
     cartItem.price = quantity * cartItem.food.price;
-    this.setToCartStorage()
+    this.setToCartStorage();
   }
 
+  // Method to clear cart
   clearCart() {
     this.cart = new Cart();
-    this.setToCartStorage()
-    this.router.navigateByUrl('/')
+    this.setToCartStorage();
+    this.router.navigateByUrl('/');
   }
 
+  // Observable to subscribe for cart changes
   public getCartObservable(): Observable<Cart> {
     return this.cartSubject.asObservable();
   }
 
+  // Method to set cart data to local storage
   private setToCartStorage(): void {
-    console.log('CartService|setToCartStorage|cart.items', this.cart.items);
     const totalPrice = this.cart.items.reduce((sum, item) => sum + parseFloat(item.price.toString()), 0);
     const totalCount = this.cart.items.reduce((sum, item) => sum + parseFloat(item.quantity.toString()), 0);
 
@@ -82,15 +88,18 @@ export class CartService {
     this.cartSubject.next(this.cart);
   }
 
+  // Method to get cart data from local storage
   private getFromStorage(): Cart {
     const cartJSON = localStorage.getItem('Cart');
     return cartJSON ? JSON.parse(cartJSON) : new Cart();
   }
 
+  // Method to post order
   postOrder(order: Order): Subscription {
     return this.httpClient.post<Order>(this.baseURL + '/orders', order)
       .subscribe({
         next: (order) => {
+          // Show snack bar message for successful order
           this.matSnack.open(JSON.stringify(order.name), 'Successful order!', {
             duration: 3000,
             verticalPosition: "top",
@@ -98,6 +107,7 @@ export class CartService {
           });
         },
         error: (error) => {
+          // Show snack bar message for failed order
           this.matSnack.open(JSON.stringify(error), 'Failed order!', {
             duration: 5000,
             verticalPosition: "top",

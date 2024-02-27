@@ -10,11 +10,9 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class RegisterPage implements OnInit {
 
-  registerForm!: FormGroup;
-
-  isSubmit = false;
-
-  returnUrl = '';
+  registerForm!: FormGroup; // Form group for registration form
+  isSubmit = false; // Flag to track form submission status
+  returnUrl = ''; // Return URL after registration
 
   constructor(
     private formBuilder: FormBuilder,
@@ -24,6 +22,7 @@ export class RegisterPage implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    // Initialize registration form with form controls and validators
     this.registerForm = this.formBuilder.group(
       {
         name: [
@@ -32,24 +31,31 @@ export class RegisterPage implements OnInit {
         ],
         email: [
           '',
-          [Validators.required, Validators.email]],
+          [Validators.required, Validators.email]
+        ],
         password: [
           '',
-          [Validators.required, Validators.minLength(2)]]
+          [Validators.required, Validators.minLength(2)]
+        ]
       });
+    // Get return URL from query params
     this.returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'];
   }
 
   onSubmit() {
-    this.isSubmit = true;
-    if (this.registerForm.controls['invalid'])
+    this.isSubmit = true; // Set form submission flag to true
+    // Check if the form is invalid
+    if (this.registerForm.invalid)
       return;
 
+    // Call user service to register the user with the provided details
     this.userService.register({
       name: this.registerForm.controls['name'].value,
       email: this.registerForm.controls['email'].value,
       password: this.registerForm.controls['password'].value
-    })
-    this.router.navigateByUrl('/')
+    });
+
+    // Redirect user to the return URL or homepage after registration
+    this.router.navigateByUrl(this.returnUrl || '/');
   }
 }

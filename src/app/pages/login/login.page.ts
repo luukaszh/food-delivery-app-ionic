@@ -11,9 +11,8 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class LoginPage implements OnInit {
 
-  loginForm!: FormGroup;
-
-  isSubmit = false;
+  loginForm!: FormGroup; // Form group for login form
+  isSubmit = false; // Flag to track form submission status
 
   constructor(
     private formBuilder: FormBuilder,
@@ -23,21 +22,25 @@ export class LoginPage implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    // Initialize login form with form controls and validators
     this.loginForm = this.formBuilder.group(
       {
         email: [
           '',
-          [Validators.required, Validators.email]],
+          [Validators.required, Validators.email]
+        ],
         password: [
           '',
-          [Validators.required, Validators.minLength(2)]]
+          [Validators.required, Validators.minLength(2)]
+        ]
       });
   }
 
   onSubmit() {
-    this.isSubmit = true;
-    console.log(this.loginForm.controls['password'].value.length)
+    this.isSubmit = true; // Set form submission flag to true
+    // Check if the password length is less than 2 characters
     if (this.loginForm.controls['password'].value.length < 2) {
+      // Show snack bar message for login failed due to minimum character requirement
       this.matSnack.open('Login failed!', 'Minimum 2 characters', {
         duration: 3000,
         verticalPosition: "top",
@@ -46,15 +49,18 @@ export class LoginPage implements OnInit {
       return;
     }
 
+    // Check if the form is invalid
     if (this.loginForm.invalid)
       return;
 
+    // Call user service to login with the provided credentials
     this.userService.login({
       email: this.loginForm.controls['email'].value,
       password: this.loginForm.controls['password'].value,
     })
       .subscribe({
         next: (res) => {
+          // Redirect user to homepage after successful login
           this.router.navigateByUrl('/');
         },
       })

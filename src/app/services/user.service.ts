@@ -7,11 +7,9 @@ import { Router } from "@angular/router";
 import { UserRegister } from "../shared/interfaces/UserRegister";
 import { ToastController } from '@ionic/angular';
 
-
 @Injectable({
   providedIn: 'root'
 })
-
 export class UserService {
 
   private userSubject = new BehaviorSubject<User>(this.getUserFromLocalStorage());
@@ -28,10 +26,12 @@ export class UserService {
     this.userObservable = this.userSubject.asObservable();
   }
 
+  // Get current user from BehaviorSubject
   public get currentUser(): User {
     return this.userSubject.value;
   }
 
+  // Method for user login
   public login(userLogin: UserLogin): Observable<User> {
     return this.httpClient.post<User>(this.baseURL + '/users/login', userLogin).pipe(
       tap({
@@ -39,6 +39,7 @@ export class UserService {
           this.setUserToLocalStorage(user);
           this.userSubject.next(user);
 
+          // Redirect to home page after successful login
           await this.router.navigateByUrl('/home');
           location.reload();
         },
@@ -49,11 +50,13 @@ export class UserService {
     );
   }
 
+  // Method for user registration
   public register(userRegister: UserRegister): Subscription {
     return this.httpClient.post<User>(this.baseURL + '/users/register', userRegister)
       .subscribe({
         next: async (user) => {
           this.userSubject.next(user);
+          // Show toast message for successful registration
           const toast = await this.toastController.create({
             message: `Successful register! Now you can Log in to Our App!`,
             duration: 3000,
@@ -62,6 +65,7 @@ export class UserService {
           toast.present();
         },
         error: async (err) => {
+          // Show toast message for failed registration
           const toast = await this.toastController.create({
             message: 'Register failed!',
             duration: 5000,
@@ -72,6 +76,7 @@ export class UserService {
       })
   }
 
+  // Method for user logout
   public logout() {
     this.userSubject.next(new User());
     localStorage.removeItem('User');
@@ -79,11 +84,13 @@ export class UserService {
     location.reload();
   }
 
+  // Method to set user data to local storage
   public async setUserToLocalStorage(user: User) {
     localStorage.setItem('User', JSON.stringify(user));
     localStorage.setItem('token', (user.token));
   }
 
+  // Method to get user data from local storage
   public getUserFromLocalStorage(): User {
     const userJson = localStorage.getItem('User');
     if (userJson)
@@ -91,10 +98,12 @@ export class UserService {
     return new User();
   }
 
+  // Method to check if user is admin
   public isAdminLoggedIn(user: User) {
     return user.isadmin;
   }
 
+  // Method to get user token from local storage
   public getToken() {
     return localStorage.getItem('token');
   }

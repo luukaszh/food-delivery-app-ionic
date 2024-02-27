@@ -12,13 +12,13 @@ export class SearchComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  enteredSearchValue: string = '';
+  enteredSearchValue: string = ''; // Variable to store the entered search value
 
   @Output()
-  searchTextChanged: EventEmitter<string> = new EventEmitter<string>();
+  searchTextChanged: EventEmitter<string> = new EventEmitter<string>(); // Event emitter for notifying parent component about search text changes
 
   onSearchTextChanged() {
-    this.searchTextChanged.emit(this.enteredSearchValue);
-    console.log(this.enteredSearchValue)
+    this.searchTextChanged.emit(this.enteredSearchValue); // Emit the entered search value to notify the parent component
+    console.log(this.enteredSearchValue); // Log the entered search value (for testing or debugging purposes)
   }
 }
