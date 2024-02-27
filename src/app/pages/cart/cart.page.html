@@ -18,7 +18,7 @@
       </div>
     </div>
   </ng-container>
-  
+
   <ng-template #cartNotEmpty>
     <ion-list>
       <ion-item *ngFor="let cartItem of cart.items">
@@ -28,7 +28,8 @@
         <ion-label>
           <h1 class="name">{{ cartItem.food.name }}</h1>
           <ion-item class="ion-item-select" lines="none">
-            <ion-select class="ion-select" [(ngModel)]="cartItem.quantity" (ionChange)="changeCartQuantity(cartItem, cartItem.quantity)">
+            <ion-select class="ion-select" [(ngModel)]="cartItem.quantity"
+              (ionChange)="changeCartQuantity(cartItem, cartItem.quantity)">
               <ion-select-option [value]="1">1</ion-select-option>
               <ion-select-option [value]="2">2</ion-select-option>
               <ion-select-option [value]="3">3</ion-select-option>
@@ -38,8 +39,9 @@
           </ion-item>
           <p class="price">{{ cartItem.price | currency }}</p>
         </ion-label>
-        <ion-icon class="trash-icon" name="trash" style="font-size: 2rem" color="danger" (click)="removeItemFromCart(cartItem)"></ion-icon>
-      </ion-item>    
+        <ion-icon class="trash-icon" name="trash" style="font-size: 2rem" color="danger"
+          (click)="removeItemFromCart(cartItem)"></ion-icon>
+      </ion-item>
     </ion-list>
 
     <div class="checkout">

@@ -7,14 +7,15 @@
       <ion-title>Menu</ion-title>
     </ion-toolbar>
   </ion-header>
-  
-  <app-search (searchTextChanged)="onSearch($event)" ></app-search>
+
+  <app-search (searchTextChanged)="onSearch($event)"></app-search>
 
   <ion-list class="food-list">
     <ng-container *ngFor="let food of foods">
-      <ion-item class="food-item" lines="none" (click)="presentModal(food)" *ngIf="searchText === '' || food.name.toLowerCase().includes(searchText)">
+      <ion-item class="food-item" lines="none" (click)="presentModal(food)"
+        *ngIf="searchText === '' || food.name.toLowerCase().includes(searchText)">
         <div class="food-link">
-          <img [src]="food.imageurl" class="food-image"/>
+          <img [src]="food.imageurl" class="food-image" />
           <ion-label class="content">
             <h2 class="name">{{food.name}}</h2>
             <div class="product-item-footer">
@@ -28,7 +29,8 @@
                 <div class="cook-time-text">
                   {{food.cooktime}}
                 </div>
-                <ion-icon class="bag-add-icon" name="bag-add" (click)="addToCart(food); $event.stopPropagation();"></ion-icon>
+                <ion-icon class="bag-add-icon" name="bag-add"
+                  (click)="addToCart(food); $event.stopPropagation();"></ion-icon>
               </div>
             </div>
           </ion-label>

@@ -25,7 +25,7 @@ export class AppComponent implements OnInit {
     private cartService: CartService,
     private menu: MenuController,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.user = this.userService.currentUser;
@@ -48,7 +48,7 @@ export class AppComponent implements OnInit {
     this.userService.logout();
   }
 
-  toggleMenu() {    
+  toggleMenu() {
     this.menu.toggle();
   }
 }

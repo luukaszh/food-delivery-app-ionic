@@ -28,7 +28,7 @@ export class UserService {
     this.userObservable = this.userSubject.asObservable();
   }
 
-  public get currentUser():User{
+  public get currentUser(): User {
     return this.userSubject.value;
   }
 
@@ -72,30 +72,30 @@ export class UserService {
       })
   }
 
-  public logout(){    
+  public logout() {
     this.userSubject.next(new User());
     localStorage.removeItem('User');
     this.router.navigateByUrl('/');
     location.reload();
   }
 
-  public async setUserToLocalStorage(user: User){
+  public async setUserToLocalStorage(user: User) {
     localStorage.setItem('User', JSON.stringify(user));
     localStorage.setItem('token', (user.token));
   }
 
-  public getUserFromLocalStorage():User{
+  public getUserFromLocalStorage(): User {
     const userJson = localStorage.getItem('User');
-    if(userJson)
+    if (userJson)
       return JSON.parse(userJson) as User;
     return new User();
   }
 
-  public isAdminLoggedIn(user: User){
+  public isAdminLoggedIn(user: User) {
     return user.isadmin;
   }
 
-  public getToken(){
+  public getToken() {
     return localStorage.getItem('token');
   }
 }

@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
-import {Food} from "../shared/models/food";
-import {HttpClient} from "@angular/common/http";
-import {BehaviorSubject, Observable, Subscription, tap} from "rxjs";
+import { Food } from "../shared/models/food";
+import { HttpClient } from "@angular/common/http";
+import { BehaviorSubject, Observable, Subscription, tap } from "rxjs";
 import { FoodAdd } from "../shared/interfaces/FoodAdd";
 import { FoodDelete } from "../shared/interfaces/foodDelete";
-import {MatSnackBar} from "@angular/material/snack-bar";
-import {Router} from "@angular/router";
 import { ToastController } from '@ionic/angular';
 
 @Injectable({
@@ -30,11 +28,11 @@ export class FoodService {
     return this.httpClient.get<Food[]>(this.baseURL + '/food');
   }
 
-  public addFood(foodAdd: FoodAdd): Observable<Food>{
+  public addFood(foodAdd: FoodAdd): Observable<Food> {
     console.log('foodSrv | addFood: ', foodAdd)
     return this.httpClient.post<Food>(this.baseURL + '/food/add', foodAdd).pipe(
       tap({
-        next: async (food) =>{          
+        next: async (food) => {
           this.foodSubject.next(food);
           const toast = await this.toastController.create({
             message: `${foodAdd.name} added successfully!`,
@@ -77,10 +75,10 @@ export class FoodService {
         },
       })
   }
-  
 
-  public getFoodById(foodId:string):Observable<Food>{    
-    const res = this.httpClient.get<Food>(this.baseURL + '/food/' + foodId);    
+
+  public getFoodById(foodId: string): Observable<Food> {
+    const res = this.httpClient.get<Food>(this.baseURL + '/food/' + foodId);
     return res;
   }
 }

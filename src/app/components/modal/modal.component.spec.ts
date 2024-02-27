@@ -9,7 +9,7 @@ describe('ModalComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ModalComponent ],
+      declarations: [ModalComponent],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 

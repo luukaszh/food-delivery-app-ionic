@@ -10,7 +10,7 @@ import { Food } from 'src/app/shared/models/food';
 })
 export class ModalComponent implements OnInit {
 
-  @Input() 
+  @Input()
   foodData!: Food;
 
   constructor(

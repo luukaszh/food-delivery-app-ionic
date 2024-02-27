@@ -1,3 +1,3 @@
-export interface FoodDelete{
+export interface FoodDelete {
   id: number;
 }

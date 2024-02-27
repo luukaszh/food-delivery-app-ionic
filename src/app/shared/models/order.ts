@@ -1,6 +1,6 @@
 import { CartItem } from "./cartItem";
 
-export class Order{
+export class Order {
   id!: string;
   items!: CartItem[];
   totalprice!: number;

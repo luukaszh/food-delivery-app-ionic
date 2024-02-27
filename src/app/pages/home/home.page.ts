@@ -41,7 +41,7 @@ export class HomePage implements OnInit {
     this.searchText = searchValue.toLowerCase();
   }
 
-  async presentModal(food: Food) {    
+  async presentModal(food: Food) {
     const modal = await this.modalController.create({
       component: ModalComponent,
       componentProps: {

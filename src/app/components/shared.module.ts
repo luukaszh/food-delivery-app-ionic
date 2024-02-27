@@ -22,4 +22,4 @@ import { ModalComponent } from './modal/modal.component';
   ],
   providers: [CurrencyPipe],
 })
-export class SharedModule {}
+export class SharedModule { }

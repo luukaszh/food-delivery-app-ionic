@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -11,14 +11,13 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class LoginPage implements OnInit {
 
-  loginForm! : FormGroup;
+  loginForm!: FormGroup;
 
   isSubmit = false;
 
   constructor(
     private formBuilder: FormBuilder,
     private userService: UserService,
-    private activatedRoute: ActivatedRoute,
     private router: Router,
     private matSnack: MatSnackBar,
   ) { }
@@ -35,7 +34,7 @@ export class LoginPage implements OnInit {
       });
   }
 
-  onSubmit(){
+  onSubmit() {
     this.isSubmit = true;
     console.log(this.loginForm.controls['password'].value.length)
     if (this.loginForm.controls['password'].value.length < 2) {
@@ -47,7 +46,7 @@ export class LoginPage implements OnInit {
       return;
     }
 
-    if(this.loginForm.invalid)
+    if (this.loginForm.invalid)
       return;
 
     this.userService.login({
@@ -55,7 +54,7 @@ export class LoginPage implements OnInit {
       password: this.loginForm.controls['password'].value,
     })
       .subscribe({
-        next: (res) =>{
+        next: (res) => {
           this.router.navigateByUrl('/');
         },
       })

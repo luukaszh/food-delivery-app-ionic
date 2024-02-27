@@ -25,8 +25,8 @@ import { SearchComponent } from './components/search/search.component';
     AppComponent,
   ],
   imports: [
-    BrowserModule, 
-    IonicModule.forRoot(), 
+    BrowserModule,
+    IonicModule.forRoot(),
     AppRoutingModule,
     RouterModule,
     HttpClientModule,
@@ -42,7 +42,7 @@ import { SearchComponent } from './components/search/search.component';
     MatSelectModule,
     MatSnackBarModule
   ],
-  providers: [AuthGuard, {provide: HTTP_INTERCEPTORS, useClass:AuthInterceptor, multi: true}],
+  providers: [AuthGuard, { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

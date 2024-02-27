@@ -9,7 +9,7 @@ describe('SearchComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ SearchComponent ],
+      declarations: [SearchComponent],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 

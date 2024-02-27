@@ -1,4 +1,4 @@
-export interface FoodAdd{
+export interface FoodAdd {
   name: string;
   price: number;
   cooktime: string;

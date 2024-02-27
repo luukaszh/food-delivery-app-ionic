@@ -14,7 +14,7 @@ export class AdminPage implements OnInit {
 
   foods: Food[] = [];
   isSubmit = false;
-  addForm! : FormGroup;
+  addForm!: FormGroup;
   selected!: FoodDelete;
   authData = true;
   foodObservable!: Observable<Food[]>;
@@ -30,7 +30,7 @@ export class AdminPage implements OnInit {
   constructor(
     private foodService: FoodService,
     private formBuilder: FormBuilder,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.initializeForm();
@@ -41,7 +41,7 @@ export class AdminPage implements OnInit {
     this.isSubmit = true;
     if (this.addForm.invalid) {
       console.log('onSubmit invalid');
-      
+
       return;
     }
     console.log('onSubmit tobeadd', this.addForm.value);
@@ -58,9 +58,9 @@ export class AdminPage implements OnInit {
     });
     this.addForm = this.formBuilder.group(formGroup);
   }
-  
 
-  public onDeleteSubmit(){
+
+  public onDeleteSubmit() {
     if (!this.selected || typeof this.selected === 'undefined') {
       return;
     }
@@ -68,8 +68,8 @@ export class AdminPage implements OnInit {
     this.getNewFoodFromObservable()
   }
 
-  private getNewFoodFromObservable(): void{
-    this.foodObservable = this.foodService.getAll();    
+  private getNewFoodFromObservable(): void {
+    this.foodObservable = this.foodService.getAll();
     this.foodObservable.subscribe((serverFoods) => {
       this.foods = serverFoods;
     })

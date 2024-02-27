@@ -14,12 +14,12 @@ export class CartPage implements OnInit {
   cartSubscription: Subscription | undefined;
   cart!: Cart;
 
-  constructor(private cartService: CartService) {}
+  constructor(private cartService: CartService) { }
 
   ngOnInit(): void {
     this.cartSubscription = this.cartService.getCartObservable().subscribe((cart) => {
       this.cart = cart;
-    });        
+    });
   }
 
   ngOnDestroy(): void {

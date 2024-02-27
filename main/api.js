@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 
-app.listen(3300, ()=>{
+app.listen(3300, () => {
   console.log("Sever is now listening at port 3300");
 })
 
@@ -21,22 +21,22 @@ client.connect();
 
 let token;
 
-app.get('/food', (req, res)=>{
-  client.query(`Select * from food`, (err, result)=>{
-    if(!err){
+app.get('/food', (req, res) => {
+  client.query(`Select * from food`, (err, result) => {
+    if (!err) {
       res.send(result.rows
       );
-    } else{
+    } else {
       console.log(err, 'error')
     }
   });
   client.end;
 })
 
-app.get('/food/:id', (req, res)=>{
-  client.query(`Select * from food where id=${req.params.id}`, (err, result)=>{
-    console.log('tttttttt',err, result);
-    if(!err){
+app.get('/food/:id', (req, res) => {
+  client.query(`Select * from food where id=${req.params.id}`, (err, result) => {
+    console.log('tttttttt', err, result);
+    if (!err) {
       res.send(result.rows[0]);
     }
   });
@@ -63,24 +63,24 @@ app.delete('/food/:id', (req, res) => {
 });
 
 
-app.get('/users', (req, res)=>{
-  client.query(`Select * from users`, (err, result)=>{
-    if(!err){
+app.get('/users', (req, res) => {
+  client.query(`Select * from users`, (err, result) => {
+    if (!err) {
       res.send(result.rows
       );
-    } else{
+    } else {
       console.log(err, 'error')
     }
   });
   client.end;
 })
 
-app.post('/users/login', (req, res)=> {
+app.post('/users/login', (req, res) => {
   client.query(`Select * from users`, (err, result) => {
     if (!err) {
       const users = result.rows;
 
-      const {email, password} = req.body;
+      const { email, password } = req.body;
       const user = users.find(user => user.email === email && user.password === password)
 
       if (user) {
@@ -99,32 +99,29 @@ app.post('/users/login', (req, res)=> {
 app.post('/users/register', (req, res) => {
   const { name, email, password, isadmin } = req.body;
 
-  // Sprawdź, czy użytkownik o podanym adresie e-mail już istnieje w bazie danych
   client.query(`SELECT * FROM users WHERE email = $1`, [email], (err, result) => {
     if (err) {
       console.error('Error querying users:', err);
-      return res.status(500).json({ message: 'Internal Server Error' }); // Zwracanie błędu w formacie JSON
+      return res.status(500).json({ message: 'Internal Server Error' });
     }
 
     const existingUser = result.rows[0];
 
-    // Jeśli użytkownik już istnieje, zwróć odpowiedni kod odpowiedzi
     if (existingUser) {
-      return res.status(409).json({ message: 'User already exists' }); // Zwracanie informacji w formacie JSON
+      return res.status(409).json({ message: 'User already exists' });
     }
 
-    // W przeciwnym razie, jeśli użytkownik nie istnieje, dodaj go do bazy danych
     const insertQuery = `INSERT INTO users (name, email, password, isadmin) VALUES ($1, $2, $3, $4)`;
     const values = [name, email, password, isadmin || false];
 
     client.query(insertQuery, values, (err, result) => {
       if (err) {
         console.error('Error inserting user:', err);
-        return res.status(500).json({ message: 'Internal Server Error' }); // Zwracanie błędu w formacie JSON
+        return res.status(500).json({ message: 'Internal Server Error' });
       }
 
       console.log('User successfully registered:', name);
-      res.status(200).json({ message: 'User registered successfully' }); // Zwracanie informacji w formacie JSON
+      res.status(200).json({ message: 'User registered successfully' }); 
     });
   });
 });
@@ -132,7 +129,7 @@ app.post('/users/register', (req, res) => {
 
 
 app.post('/orders', (req, res) => {
-  client.query(`Select * from orders`, (err, result)=>{
+  client.query(`Select * from orders`, (err, result) => {
 
     const orders_len = result.rows.length;
     const formatItems = `${JSON.stringify(req.body.items)}`;
@@ -141,11 +138,11 @@ app.post('/orders', (req, res) => {
     let insertQuery = `insert into orders(id, items, totalprice, name, address)
                          values('${order.id = orders_len + 1}', '${formatItems}', '${order.totalprice}', '${order.name}', '${order.address}')`
 
-    client.query(insertQuery, (err, result)=>{
-      if(!err){
+    client.query(insertQuery, (err, result) => {
+      if (!err) {
         res.send('Insertion was successful')
       }
-      else{
+      else {
         res.send('err', err.message)
       }
     })
@@ -157,15 +154,15 @@ app.post('/orders', (req, res) => {
 
 
 
-app.get('/examplefood', (req, res)=>{
+app.get('/examplefood', (req, res) => {
   jwt.verify(token.token, 'secretKey', (err, authData) => {
-    if (err && token.isadmin === false){
+    if (err && token.isadmin === false) {
       res.sendStatus(403);
-    } else{
-      client.query(`Select * from examplefood`, (err, result)=>{
-        if(!err){
+    } else {
+      client.query(`Select * from examplefood`, (err, result) => {
+        if (!err) {
           res.send(result.rows);
-        } else{
+        } else {
           res.send(err, 'error')
         }
       });
@@ -186,21 +183,20 @@ app.post('/food/add', (req, res) => {
           console.log('Error:', err);
           return res.status(500).json({ error: err.message });
         }
-    
+
         const existingIds = result.rows.map(row => +row.id);
         let nextId = 1;
-    
+
         while (existingIds.includes(nextId)) {
           nextId++;
         }
-    
-        // Użyj dynamicznego zapytania SQL, aby wstawić wszystkie kolumny, które przychodzą w danych
+
         const columnNames = ['id', ...Object.keys(food)].join(', ');
         const columnValues = [nextId, ...Object.values(food).map(value => typeof value === 'string' ? `'${value}'` : value)].join(', ');
 
         const insertQuery = `INSERT INTO food(${columnNames})
                              VALUES(${columnValues})`;
-    
+
         client.query(insertQuery, (err, result) => {
           if (err) {
             console.log('Error:', err);
@@ -231,7 +227,7 @@ const generateToken = (user) => {
 }
 
 function dynamicSort(property) {
-  return function(a, b) {
+  return function (a, b) {
     return (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
   }
 }

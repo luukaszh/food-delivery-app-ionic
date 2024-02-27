@@ -9,7 +9,7 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./register.page.scss'],
 })
 export class RegisterPage implements OnInit {
-  
+
   registerForm!: FormGroup;
 
   isSubmit = false;
@@ -40,9 +40,9 @@ export class RegisterPage implements OnInit {
     this.returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'];
   }
 
-  onSubmit(){
+  onSubmit() {
     this.isSubmit = true;
-    if(this.registerForm.controls['invalid'])
+    if (this.registerForm.controls['invalid'])
       return;
 
     this.userService.register({

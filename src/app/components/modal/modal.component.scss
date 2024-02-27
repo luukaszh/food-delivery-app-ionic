@@ -1,40 +1,41 @@
 .custom-header {
     background-color: #f87f54;
-  }
+}
 
-.image-container{
+.image-container {
     display: flex;
     justify-content: center;
     padding: 10px;
 }
 
-.image{
+.image {
     width: 50%;
     border-radius: 30px;
 }
 
-.description-container{
+.description-container {
     justify-content: center;
 }
 
 .description {
     max-width: 70%;
-    margin: 0 auto; /* Automatyczne ustawienie marginesów poziomych na "auto" powoduje wyśrodkowanie elementu wzdłuż osi poziomej */
-    text-align: center; 
+    margin: 0 auto;
+    /* Automatyczne ustawienie marginesów poziomych na "auto" powoduje wyśrodkowanie elementu wzdłuż osi poziomej */
+    text-align: center;
     height: 100%;
-  }
+}
 
-.add-button-container{
+.add-button-container {
     display: inline-block;
 }
 
-.foot-container{
+.foot-container {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
 
-.price{
+.price {
     display: inline-block;
     display: flex;
     align-items: center;
@@ -42,31 +43,31 @@
     margin-right: 10px;
 }
 
-.price-p{
+.price-p {
     font-size: 20px;
     font-weight: bold;
     margin-bottom: 0;
 }
 
-.cook-time{
+.cook-time {
     display: inline-block;
     display: flex;
     align-items: center;
     margin-left: 10px;
 }
 
-.cook-time-p{
+.cook-time-p {
     font-size: 20px;
     font-weight: bold;
     margin-bottom: 0;
 }
 
-.description-p{
+.description-p {
     font-weight: bold;
 }
 
-@media (max-width: 500px){
-    .image{
+@media (max-width: 500px) {
+    .image {
         width: 80%;
         border-radius: 30px;
     }
