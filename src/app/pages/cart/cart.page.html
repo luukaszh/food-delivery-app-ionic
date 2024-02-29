@@ -49,7 +49,7 @@
       <div class="checkout-clear-container">
         <ion-button class="checkout-button" color="primary" routerLink="/checkout">Checkout</ion-button>
         <ion-button class="clear-button" color="medium" (click)="clearCart()">Clear</ion-button>
-        <div class="total-price">Sum: {{ cart.totalPrice | currency }}</div>
+        <p class="total-price">Sum: {{ cart.totalPrice | currency }}</p>
       </div>
     </div>
   </ng-template>

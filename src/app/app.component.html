@@ -4,7 +4,7 @@
       <ion-content>
         <ion-list id="inbox-list">
           <ion-list-header>
-            <img class="image-logo" src="/assets/logo.jpg">
+            <img class="image-logo" src="/assets/logo.png">
           </ion-list-header>
           <ion-note *ngIf="user.token">Welcome <span class="user-name">{{user.name}}</span></ion-note>
 
@@ -19,7 +19,7 @@
               <ion-icon class="construct-icon" aria-hidden="true" slot="start" name="construct"></ion-icon>
               <ion-label>Admin</ion-label>
             </ion-item>
-            <ion-item routerDirection="root" [routerLink]="['/cart']" lines="none" detail="false"
+            <ion-item routerDirection="root" [routerLink]="['/cart']" detail="false"
               routerLinkActive="selected">
               <div class="cart-container">
                 <ion-icon class="cart-icon" aria-hidden="true" slot="start" name="cart"></ion-icon>
@@ -29,6 +29,14 @@
               </div>
               <ion-label class="ion-label-cart">Cart</ion-label>
             </ion-item>
+
+            <ion-item lines="none">
+              <div class="toggle-theme-container">
+                  <ion-icon name="sunny-outline"></ion-icon>
+                  <ion-toggle class="toggle-theme" (ionChange)="toggleTheme($event)"></ion-toggle>
+                  <ion-icon name="moon-outline" class="moon-icon"></ion-icon>
+              </div>
+          </ion-item>
           </ion-menu-toggle>
         </ion-list>
 

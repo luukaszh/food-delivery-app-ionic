@@ -60,4 +60,13 @@ export class AppComponent implements OnInit {
   toggleMenu() {
     this.menu.toggle();
   }
+
+  public toggleTheme(event: { detail: { checked: any; }; }) {
+    if (event.detail.checked) {
+      document.body.setAttribute('color-theme', 'dark')
+    } else {
+      document.body.setAttribute('color-theme', 'light')
+    }
+    
+  }
 }
