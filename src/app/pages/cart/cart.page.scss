@@ -53,3 +53,21 @@ ion-thumbnail {
 h1 {
   color: #fe7240;
 }
+
+ion-content {
+  --offset-bottom: auto !important;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+      width: 10px;
+  }
+
+  &::-webkit-scrollbar-track {
+      background-color: #f1f1f1;
+  }
+
+  &::-webkit-scrollbar-thumb {
+      background-color: #fe7240;
+      border-radius: 5px;
+  }
+}

@@ -62,6 +62,31 @@ app.delete('/food/:id', (req, res) => {
   });
 });
 
+app.put('/food/:id', (req, res) => {
+  const { id } = req.params;
+  const { name, price, cooktime, imageurl, description } = req.body;
+
+  jwt.verify(token.token, 'secretKey', (err, authData) => {
+    if (err && token.isadmin === false) {
+      res.status(403).json({ message: "You do not have permission!" });
+    } else {
+      const updateQuery = `
+        UPDATE food 
+        SET name='${name}', price=${price}, cooktime='${cooktime}', imageurl='${imageurl}', description='${description}' 
+        WHERE id=${id}
+      `;
+
+      client.query(updateQuery, (err, result) => {
+        if (!err) {
+          res.status(200).json({ message: 'Update was successful' });
+        } else {
+          console.error(err.message);
+          res.status(500).json({ error: 'Internal Server Error' });
+        }
+      });
+    }
+  });
+});
 
 app.get('/users', (req, res) => {
   client.query(`Select * from users`, (err, result) => {

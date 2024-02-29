@@ -3,4 +3,5 @@ export interface FoodAdd {
   price: number;
   cooktime: string;
   imageurl: string;
+  description: string;
 }

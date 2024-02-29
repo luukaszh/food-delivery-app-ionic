@@ -11,18 +11,29 @@ import { Food } from 'src/app/shared/models/food';
   styleUrls: ['./admin.page.scss'],
 })
 export class AdminPage implements OnInit {
+  foods: Food[] = [];  // Array to store food items
+  isSubmit = false;  // Flag to track form submission status
+  addForm!: FormGroup;  // Form group for adding food
+  selected!: FoodDelete;  // Variable to store selected food item for deletion
+  authData = true;  // Placeholder for authentication data (assuming it's hardcoded to true for now)
+  foodObservable!: Observable<Food[]>;  // Observable for food data
+  editForm!: FormGroup;  // Form group for editing food
+  editFoodSelected!: Food;  // Variable to store the selected food item for editing
 
-  foods: Food[] = []; // Array to store food items
-  isSubmit = false; // Flag to track form submission status
-  addForm!: FormGroup; // Form group for adding food
-  selected!: FoodDelete; // Variable to store selected food item for deletion
-  authData = true; // Placeholder for authentication data (assuming it's hardcoded to true for now)
-  foodObservable!: Observable<Food[]>; // Observable for food data
-
-  formFields: any[] = [ // Array defining form fields for adding food
+  // Array defining form fields for adding food
+  formFields: any[] = [
     { name: 'name', label: 'Name', type: 'text', placeholder: 'Name' },
     { name: 'price', label: 'Price', type: 'number', placeholder: 'Price' },
-    { name: 'cooktime', label: 'Cook time', type: 'text', placeholder: 'Cook time' },
+    { name: 'cooktime', label: 'Cook time [min]', type: 'text', placeholder: 'Cook time [min]' },
+    { name: 'imageurl', label: 'Image url', type: 'text', placeholder: 'Image url' },
+    { name: 'description', label: 'Description', type: 'text', placeholder: 'Description' }
+  ];
+
+  // Form fields for editing food
+  editFormFields: { name: keyof Food; label: string; type: string; placeholder: string }[] = [
+    { name: 'name', label: 'Name', type: 'text', placeholder: 'Name' },
+    { name: 'price', label: 'Price', type: 'text', placeholder: 'Price' },
+    { name: 'cooktime', label: 'Cook time [min]', type: 'text', placeholder: 'Cook time [min]' },
     { name: 'imageurl', label: 'Image url', type: 'text', placeholder: 'Image url' },
     { name: 'description', label: 'Description', type: 'text', placeholder: 'Description' }
   ];
@@ -33,42 +44,76 @@ export class AdminPage implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.initializeForm(); // Initialize the form for adding food
-    this.getNewFoodFromObservable(); // Fetch initial food data
+    // Initialize the form for adding food
+    this.initializeForm();
+    // Initialize the form for editing food
+    this.initializeEditForm();
+    // Fetch initial food data
+    this.getNewFoodFromObservable();
   }
 
+  // Method to handle form submission for adding food
   public onAddSubmit() {
-    this.isSubmit = true; // Set form submission flag to true
+    this.isSubmit = true;
     if (this.addForm.invalid) {
-      return; // If the form is invalid, do nothing
+      return;
     }
-    // Add new food item using the food service and subscribe to get updated food data
     this.foodService.addFood(this.addForm.value).subscribe(() => {
       this.getNewFoodFromObservable();
     });
-    this.addForm.reset(); // Reset the form after submission
+    this.addForm.reset();
   }
 
+  // Method to initialize the form for adding food
   private initializeForm(): void {
     const formGroup: { [key: string]: any } = {};
-    // Loop through form fields and initialize form controls with validators
     this.formFields.forEach(field => {
       formGroup[field.name] = ['', Validators.required];
     });
-    this.addForm = this.formBuilder.group(formGroup); // Create form group with initialized form controls
+    this.addForm = this.formBuilder.group(formGroup);
   }
 
+  // Method to initialize the form for editing food
+  private initializeEditForm(): void {
+    const formGroup: { [key: string]: any } = {};
+    this.editFormFields.forEach(field => {
+      formGroup[field.name] = ['', Validators.required];
+    });
+    this.editForm = this.formBuilder.group(formGroup);
+  }
+
+  // Method to update the edit form with selected food data
+  public updateEditForm(): void {
+    const formGroup: { [key: string]: any } = {};
+    this.editFormFields.forEach(field => {
+      formGroup[field.name] = [this.editFoodSelected[field.name], Validators.required];
+    });
+    this.editForm = this.formBuilder.group(formGroup);
+  }
+
+  // Method to handle form submission for editing food
+  public onEditSubmit(): void {
+    if (this.editForm.invalid) {
+      return;
+    }
+    const editedFood: Food = { ...this.editForm.value, id: this.editFoodSelected.id.toString() };
+    this.foodService.updateFood(editedFood).subscribe(() => {
+      this.getNewFoodFromObservable();
+      this.editForm.reset();
+    });
+  }
+
+  // Method to handle form submission for deleting food
   public onDeleteSubmit() {
     if (!this.selected || typeof this.selected === 'undefined') {
-      return; // If no food item is selected for deletion, do nothing
+      return;
     }
-    // Call food service to delete selected food item and fetch updated food data
     this.foodService.deleteFood(this.selected);
     this.getNewFoodFromObservable();
   }
 
+  // Method to fetch new food data from the observable
   private getNewFoodFromObservable(): void {
-    // Get observable for food data from the food service and subscribe to update the foods array
     this.foodObservable = this.foodService.getAll();
     this.foodObservable.subscribe((serverFoods) => {
       this.foods = serverFoods;

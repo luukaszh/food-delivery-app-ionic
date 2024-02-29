@@ -1,15 +1,15 @@
-<ion-content>
-  <ion-header [translucent]="true">
-    <ion-toolbar>
-      <ion-buttons slot="start">
-        <ion-menu-button></ion-menu-button>
-      </ion-buttons>
-      <ion-title>Admin</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Admin</ion-title>
+  </ion-toolbar>
+</ion-header>
 
+<ion-content>
   <ion-card>
-    <ion-card-content class="first-card">
+    <ion-card-content class="edit-card">
       <div class="header">
         <ion-title>Add Pizza</ion-title>
       </div>
@@ -32,7 +32,7 @@
   </ion-card>
 
   <ion-card>
-    <ion-card-content class="second-card">
+    <ion-card-content class="delete-card">
       <div class="header">
         <ion-title>Delete Pizza</ion-title>
       </div>
@@ -48,6 +48,35 @@
       <div class="subbmit-button-delete">
         <ion-button color="primary" expand="block" (click)="onDeleteSubmit()" [disabled]="!selected">Delete</ion-button>
       </div>
+
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-content class="edit-card">
+      <div class="header">
+        <ion-title>Edit Pizza</ion-title>
+      </div>
+
+      <ion-item>
+        <ion-select class="ion-select-del-food" [(ngModel)]="editFoodSelected" placeholder="Pizza" (ngModelChange)="updateEditForm()">
+          <ion-select-option *ngFor="let food of foods" [value]="food">
+            {{food.name}}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <form [formGroup]="editForm">
+        <div *ngFor="let field of editFormFields">
+          <ion-item>
+            <ion-label position="floating">{{ field.label }}</ion-label>
+            <ion-input [type]="field.type" [placeholder]="field.placeholder" [formControlName]="field.name"></ion-input>
+          </ion-item>
+        </div>
+        <div class="subbmit-button-add">
+          <ion-button color="primary" expand="block" (click)="onEditSubmit()" [disabled]="editForm.invalid">Edit</ion-button>
+        </div>
+      </form>
 
     </ion-card-content>
   </ion-card>
