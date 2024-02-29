@@ -1,45 +1,47 @@
-<ion-card>
-  <ion-card-content>
-    <div class="header">
-      <h2>REGISTER</h2>
-    </div>
-    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-
-      <div class="name-input">
-        <ion-item>
-          <ion-label position="floating">Name</ion-label>
-          <ion-input type="text" placeholder="Name" formControlName="name"></ion-input>
-        </ion-item>
+<ion-content>
+  <ion-card>
+    <ion-card-content>
+      <div class="header">
+        <h2>REGISTER</h2>
       </div>
-      <!-- <div class="error" *ngIf="registerForm.get('name').errors && isSubmit">
-        <div *ngIf="registerForm.get('name').errors.required">Required value</div>
-      </div> -->
-
-      <div class="email-input">
-        <ion-item>
-          <ion-label position="floating">Email</ion-label>
-          <ion-input type="email" placeholder="Email" formControlName="email"></ion-input>
-        </ion-item>
-      </div>
-      <!-- <div class="error" *ngIf="registerForm.get('email').errors && isSubmit">
-        <div *ngIf="registerForm.get('email').errors.required">Required value</div>
-        <div *ngIf="registerForm.get('email').errors.email">Email is invalid</div>
-      </div> -->
-
-      <div class="password-input">
-        <ion-item>
-          <ion-label position="floating">Password</ion-label>
-          <ion-input type="password" placeholder="Password" formControlName="password"></ion-input>
-        </ion-item>
-      </div>
-      <!-- <div class="error" *ngIf="registerForm.get('password').errors && isSubmit">
-        <div *ngIf="registerForm.get('password').errors.required">Required value</div>
-      </div> -->
-
-      <div class="submit-button">
-        <ion-button expand="block" color="primary" (click)="onSubmit()">Register</ion-button>
-      </div>
-
-    </form>
-  </ion-card-content>
-</ion-card>
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+  
+        <div class="name-input">
+          <ion-item>
+            <ion-label position="floating">Name</ion-label>
+            <ion-input type="text" placeholder="Name" formControlName="name"></ion-input>
+          </ion-item>
+        </div>
+        <!-- <div class="error" *ngIf="registerForm.get('name').errors && isSubmit">
+          <div *ngIf="registerForm.get('name').errors.required">Required value</div>
+        </div> -->
+  
+        <div class="email-input">
+          <ion-item>
+            <ion-label position="floating">Email</ion-label>
+            <ion-input type="email" placeholder="Email" formControlName="email"></ion-input>
+          </ion-item>
+        </div>
+        <!-- <div class="error" *ngIf="registerForm.get('email').errors && isSubmit">
+          <div *ngIf="registerForm.get('email').errors.required">Required value</div>
+          <div *ngIf="registerForm.get('email').errors.email">Email is invalid</div>
+        </div> -->
+  
+        <div class="password-input">
+          <ion-item>
+            <ion-label position="floating">Password</ion-label>
+            <ion-input type="password" placeholder="Password" formControlName="password"></ion-input>
+          </ion-item>
+        </div>
+        <!-- <div class="error" *ngIf="registerForm.get('password').errors && isSubmit">
+          <div *ngIf="registerForm.get('password').errors.required">Required value</div>
+        </div> -->
+  
+        <div class="submit-button">
+          <ion-button expand="block" color="primary" (click)="onSubmit()">Register</ion-button>
+        </div>
+  
+      </form>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
