@@ -7,3 +7,11 @@
   /* Kolor obramowania */
   --border-radius: 5rem;
 }
+
+.custom-searchbar {
+  transition: transform 0.3s;
+}
+
+.custom-searchbar:hover {
+  transform: scale(1.01);
+}
