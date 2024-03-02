@@ -34,6 +34,7 @@ ion-thumbnail {
 .trash-icon:hover {
   transform: scale(1.2);
   transition: transform 0.2s ease;
+  cursor: pointer;
 }
 
 /* Adjusting ion-select styles */
@@ -54,6 +55,18 @@ h1 {
   color: #fe7240;
 }
 
+ion-item {
+  cursor: default;
+  border-radius: 1rem;
+}
+
+ion-item:hover {
+  --background-hover: var(--ion-item-background-hover, #f4f5f8);
+}
+
+ion-item:focus-within {
+  --background-hover: var(--ion-item-background-hover, #f4f5f8);
+}
 // ion-content {
 //   --offset-bottom: auto !important;
 //   overflow-y: auto;

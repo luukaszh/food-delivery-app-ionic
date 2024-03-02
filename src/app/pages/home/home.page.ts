@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, ToastController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { ModalComponent } from 'src/app/components/modal/modal.component';
 import { CartService } from 'src/app/services/cart.service';
@@ -20,7 +20,8 @@ export class HomePage implements OnInit {
   constructor(
     private foodService: FoodService,
     private modalController: ModalController,
-    private cartService: CartService
+    private cartService: CartService,
+    private toastController: ToastController
   ) {}
 
   ngOnInit(): void {
@@ -57,5 +58,19 @@ export class HomePage implements OnInit {
   // Method to add a food item to the cart
   public addToCart(food: Food): void {
     this.cartService.addItemToCart(food); // Call cart service to add item to cart
+    this.showToast(food);
+  }
+
+  async showToast(foodData: Food) {
+    // Show a toast notification with the food item's name indicating it has been added to the cart
+    await this.toastController.create({
+      message: `${foodData.name} added to cart!`,
+      duration: 4000,
+      position: 'bottom',
+      color: '',
+      buttons: [{
+        text: 'OK',
+      }]
+    }).then(res => res.present());
   }
 }

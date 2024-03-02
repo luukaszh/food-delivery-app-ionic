@@ -1,6 +1,14 @@
+ion-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
 ion-card {
   max-width: 400px;
   margin: auto;
+  margin-top: 170px;
 }
 
 .header {
