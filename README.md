@@ -1,5 +1,5 @@
 
-# Project Name
+# Food Delivery App
 
 ## Application Features:
 
@@ -36,7 +36,7 @@ To get the project up and running on your local machine for development and test
 
 2. **Navigate to the project directory**
 
-4. **Install Ionic and Angular**:
+4. **Install Angular and Ionic**:
 ```bash
 npm install @angular/cli
 ```
@@ -49,16 +49,16 @@ npm install @ionic/cli
 npm install
 ```
 
-4. **Start the development server**:
-```bash
-ionic serve
-```
+4. **Install postgresql and setup in main/connection.js**
 
-5. **Install postgresql and setup in main/connection.js**
-
-6. **Run api.js file**:
+5. **Run api.js file**:
 ```bash
 node api.js
+```
+
+6. **Start the development server**:
+```bash
+ionic serve
 ```
 
 This commands will launch the app in your default web browser. You can now develop and test your application in a local environment.
