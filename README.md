@@ -39,7 +39,8 @@ To get the project up and running on your local machine for development and test
 4. **Install Ionic and Angular**:
 ```bash
 npm install @angular/cli
-
+```
+```bash
 npm install @ionic/cli
 ```
 
