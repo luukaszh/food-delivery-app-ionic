@@ -198,9 +198,9 @@ app.get('/examplefood', (req, res) => {
 
 app.post('/food/add', (req, res) => {
   jwt.verify(token.token, 'secretKey', (err, authData) => {
-    if (err) {
+    if (err){
       res.status(403).send("You do not have permission!")
-    } else {
+    } else{
       const food = req.body;
 
       client.query(`SELECT id FROM food ORDER BY id`, (err, result) => {
@@ -216,18 +216,16 @@ app.post('/food/add', (req, res) => {
           nextId++;
         }
 
-        const columnNames = ['id', ...Object.keys(food)].join(', ');
-        const columnValues = [nextId, ...Object.values(food).map(value => typeof value === 'string' ? `'${value}'` : value)].join(', ');
+        const insertQuery = `INSERT INTO food(id, name, price, cooktime, imageurl, description)
+        VALUES('${nextId}', '${food.name}', '${food.price}', '${food.cooktime}', '${food.imageurl}', '${food.description}')`;
 
-        const insertQuery = `INSERT INTO food(${columnNames})
-                             VALUES(${columnValues})`;
 
         client.query(insertQuery, (err, result) => {
           if (err) {
             console.log('Error:', err);
             return res.status(500).json({ error: 'Insertion was NOT successful: ' + err.message });
           }
-          console.log('success');
+
           res.status(200).json({ message: 'Insertion was successful' });
         });
       });
