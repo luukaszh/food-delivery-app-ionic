@@ -1,0 +1,26 @@
+<ion-card>
+  <ion-card-header>
+    <ion-card-title>Order Items</ion-card-title>
+  </ion-card-header>
+
+  <ion-card-content>
+    <ion-list lines="none">
+      <ion-item *ngFor="let item of order.items">
+        <ion-thumbnail slot="start">
+          <img [src]="item.food.imageurl" alt="Food Image">
+        </ion-thumbnail>
+        <ion-label>
+          <h2>{{ item.food.name }}</h2>
+          <p>Price: {{ item.food.price | currency}}</p>
+          <p>Quantity: {{ item.quantity }}</p>
+          <p>Item Price: {{ item.price | currency}}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+
+    <ion-item lines="none">
+      <ion-label slot="start" class="total-label"><strong>Total:</strong></ion-label>
+      <ion-label slot="end" class="total-price"><strong>{{ order.totalPrice | currency}}</strong></ion-label>
+    </ion-item>
+  </ion-card-content>
+</ion-card>

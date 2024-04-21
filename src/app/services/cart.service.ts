@@ -73,6 +73,10 @@ export class CartService {
     return this.cartSubject.asObservable();
   }
 
+  public getCart(): Cart {
+    return this.cartSubject.value;
+  }
+
   // Method to set cart data to local storage
   private setToCartStorage(): void {
     const totalPrice = this.cart.items.reduce((sum, item) => sum + parseFloat(item.price.toString()), 0);

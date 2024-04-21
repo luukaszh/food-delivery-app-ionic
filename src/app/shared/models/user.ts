@@ -5,4 +5,5 @@ export class User {
   email!: string;
   token!: string;
   isadmin!: boolean;
+  address!: string;
 }

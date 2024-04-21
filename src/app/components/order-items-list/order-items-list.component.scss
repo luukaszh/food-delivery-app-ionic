@@ -1,0 +1,48 @@
+/* Dopasowanie ikony miniaturek */
+ion-thumbnail {
+  width: 20%;
+  height: 20%;
+
+  img {
+    border-radius: 10px;
+  }
+}
+
+/* Stylowanie ceny końcowej */
+.total-price {
+  float: right;
+  margin-right: 15px;
+  padding-top: 10px;
+  font-weight: bold;
+  color: #fe7240;
+}
+
+/* Stylowanie ceny pojedynczego przedmiotu w koszyku */
+.price {
+  font-weight: bold;
+  font-size: 17px;
+  color: #fe7240;
+}
+
+/* Stylowanie przycisku "Checkout" */
+.checkout-button {
+  padding: 0 15px;
+  color: white;
+  background-color: #fe7240; /* Kolor tła przycisku */
+}
+
+/* Stylowanie ikony kosza */
+.trash-icon:hover {
+  transform: scale(1.2);
+  transition: transform 0.2s ease;
+  cursor: pointer;
+}
+
+/* Dostosowanie wyglądu select'a Ionic */
+.ion-item-select {
+  display: inline-block;
+}
+
+.ion-select {
+  font-size: 18px;
+}

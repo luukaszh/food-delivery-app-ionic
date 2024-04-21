@@ -1,0 +1,35 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Checkout</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <div class="container">
+    <ion-card>
+      <ion-item>
+        <ion-label position="floating">Name</ion-label>
+        <ion-input type="text"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Address</ion-label>
+        <ion-input type="text"></ion-input>
+      </ion-item>
+    </ion-card>
+      <!-- <form [formGroup]="checkoutForm"> -->
+      <!-- </form> -->
+    <order-items-list [order]="order"></order-items-list>
+    <ion-card class="map-card">
+      <ion-title size="large">Choose Your Address On Map</ion-title>
+      <map [order]="order"></map>
+    </ion-card>
+    <div class="buttons-container">
+      <div class="buttons">
+        <ion-button (click)="createOrder()">
+          Go To Payment
+        </ion-button>
+      </div>
+    </div>
+  </div>
+</ion-content>
