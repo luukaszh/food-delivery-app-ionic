@@ -36,6 +36,7 @@
     "ionicons": "^7.0.0",
     "jsonwebtoken": "^9.0.2",
     "leaflet": "^1.9.4",
+    "leaflet-control-geocoder": "^2.4.0",
     "pg": "^8.11.3",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",

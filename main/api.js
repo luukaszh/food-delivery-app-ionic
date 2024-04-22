@@ -33,6 +33,18 @@ app.get('/food', (req, res) => {
   client.end;
 })
 
+app.get('/orders', (req, res) => {
+  client.query(`Select * from orders`, (err, result) => {
+    if (!err) {
+      res.send(result.rows
+      );
+    } else {
+      console.log(err, 'error')
+    }
+  });
+  client.end;
+})
+
 app.get('/food/:id', (req, res) => {
   client.query(`Select * from food where id=${req.params.id}`, (err, result) => {
     console.log('tttttttt', err, result);
@@ -151,34 +163,6 @@ app.post('/users/register', (req, res) => {
   });
 });
 
-
-
-app.post('/orders', (req, res) => {
-  client.query(`Select * from orders`, (err, result) => {
-
-    const orders_len = result.rows.length;
-    const formatItems = `${JSON.stringify(req.body.items)}`;
-    const order = req.body;
-
-    let insertQuery = `insert into orders(id, items, totalprice, name, address)
-                         values('${order.id = orders_len + 1}', '${formatItems}', '${order.totalprice}', '${order.name}', '${order.address}')`
-
-    client.query(insertQuery, (err, result) => {
-      if (!err) {
-        res.send('Insertion was successful')
-      }
-      else {
-        res.send('err', err.message)
-      }
-    })
-    client.end;
-  });
-});
-
-
-
-
-
 app.get('/examplefood', (req, res) => {
   jwt.verify(token.token, 'secretKey', (err, authData) => {
     if (err && token.isadmin === false) {
@@ -197,6 +181,7 @@ app.get('/examplefood', (req, res) => {
 })
 
 app.post('/food/add', (req, res) => {
+  console.log('dupaaa', req, res);
   jwt.verify(token.token, 'secretKey', (err, authData) => {
     if (err){
       res.status(403).send("You do not have permission!")
@@ -233,9 +218,68 @@ app.post('/food/add', (req, res) => {
   });
 });
 
+app.post('/orders', (req, res) => {
+  
+  // jwt.verify(token.token, 'secretKey', (err, authData) => {
+  // if (err){
+  //   res.status(403).send("You do not have permission!")
+  // } else{
+  client.query(`SELECT id FROM orders ORDER BY id`, (err, result) => {
+    if (err) {
+      console.log('Error:', err);
+      return res.status(500).json({ error: err.message });
+    }
+    console.log('dupaaa', req.body.totalprice);
+    const existingIds = result.rows.map(row => +row.id);
+    let nextId = 1;
+
+    while (existingIds.includes(nextId)) {
+      nextId++;
+    }
+    const orders_len = result.rows.length;
+    const formatItems = JSON.stringify(req.body.items);
+    const order = req.body;
+
+    console.log('aaaaaaaaaa', nextId, order.name, formatItems, order.totalprice, order.address);
+    const insertQuery = `INSERT INTO orders(id, name, items, totalprice, address)
+      VALUES('${nextId}', '${order.name}', '${formatItems}', '${order.totalprice}', '${order.address}')`;
+
+    client.query(insertQuery, (err, result) => {
+      if (err) {
+        console.log('Error:', err);
+        return res.status(500).json({ error: 'Insertion was NOT successful: ' + err.message });
+      }
+
+      res.status(200).json({ message: 'Insertion was successful' });
+    });
+  });
+  // }
+  // });
+});
 
 
 
+// app.post('/orders', (req, res) => {
+//   client.query(`Select * from orders`, (err, result) => {
+
+//     const orders_len = result.rows.length;
+//     const formatItems = `${JSON.stringify(req.body.items)}`;
+//     const order = req.body;
+
+//     let insertQuery = `insert into orders(id, items, totalprice, name, address)
+//                          values('${order.id = orders_len + 1}', '${formatItems}', '${order.totalprice}', '${order.name}', '${order.address}')`
+
+//     client.query(insertQuery, (err, result) => {
+//       if (!err) {
+//         res.send('Insertion was successful')
+//       }
+//       else {
+//         res.status(500).send('Error: ' + err.message)
+//       }
+//     })
+//     client.end;
+//   });
+// });
 
 
 const generateToken = (user) => {

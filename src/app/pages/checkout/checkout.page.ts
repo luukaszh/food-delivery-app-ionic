@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { ToastController } from '@ionic/angular';
 import { CartService } from 'src/app/services/cart.service';
+import { OrderService } from 'src/app/services/order.service';
 import { UserService } from 'src/app/services/user.service';
-import { Order } from 'src/app/shared/models/order';
+import { Order, OrderAdd } from 'src/app/shared/models/order';
+
 
 @Component({
   selector: 'app-checkout',
@@ -17,10 +19,11 @@ export class CheckoutPage implements OnInit {
 
   constructor(
     private cartService: CartService,
-    private formBuilder: FormBuilder,
     private userService: UserService,
-    private toastController: ToastController
-  ) { }
+    private toastController: ToastController,
+    private orderService: OrderService
+  ) {
+  }
 
   ngOnInit(): void {
     let {name, address} = this.userService.currentUser;
@@ -28,11 +31,7 @@ export class CheckoutPage implements OnInit {
     this.order.items = cart.items;
     this.order.totalPrice = cart.totalPrice;
 
-    this.checkoutForm = this.formBuilder.group({
-      name:[name, Validators.required],
-      address:[address, Validators.required]
-    })
-
+    this.order.name = name;
   }
 
   get fc() {
@@ -40,7 +39,8 @@ export class CheckoutPage implements OnInit {
   }
 
   public async createOrder() {
-    if (this.checkoutForm.invalid) {
+    
+    if ((this.order.name === "" && this.order.address === "") || (this.order.name === undefined && this.order.address === undefined)) {
       const toast = await this.toastController.create({
         message: `Please fill all the inputs!`,
         duration: 5000,
@@ -49,8 +49,14 @@ export class CheckoutPage implements OnInit {
       toast.present();
       return;
     }
-  
-    this.order.name = this.fc['name'].value;
-    this.order.address = this.fc['address'].value;
+    const order: OrderAdd = {
+      items: this.order.items,
+      totalprice: this.order.totalPrice,
+      name: this.order.name,
+      address: this.order.address
+    };
+    const res = this.orderService.postOrder(order)
+    console.log('order res:', res);
+
   }  
 }

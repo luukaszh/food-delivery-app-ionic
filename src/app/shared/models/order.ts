@@ -8,7 +8,14 @@ export class Order {
   name!: string;
   address!: string;
   addressLatLng?: LatLng;
-  paymentId!: string;
-  createdAt!: string;
-  status!: string;
+  paymentId?: string;
+  createdAt?: string;
+  status?: string;
+}
+
+export class OrderAdd {
+  items!: CartItem[];
+  totalprice!: number;
+  name!: string;
+  address!: string;
 }
