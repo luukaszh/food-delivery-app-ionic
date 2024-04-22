@@ -18,4 +18,5 @@ export class OrderAdd {
   totalprice!: number;
   name!: string;
   address!: string;
+  paymentId?: string;
 }

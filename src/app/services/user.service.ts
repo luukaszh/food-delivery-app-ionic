@@ -81,6 +81,7 @@ export class UserService {
     this.userSubject.next(new User());
     localStorage.removeItem('User');
     this.router.navigateByUrl('/');
+    localStorage.setItem('token', '');
     location.reload();
   }
 
@@ -104,7 +105,14 @@ export class UserService {
   }
 
   // Method to get user token from local storage
-  public getToken() {
+  public getToken() {    
     return localStorage.getItem('token');
+  }
+
+  public isAuthorized() {
+    if (this.getToken() === '' || this.getToken() === undefined) {
+      return false;
+    }
+    return true;
   }
 }

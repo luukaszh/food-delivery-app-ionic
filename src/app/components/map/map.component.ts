@@ -3,7 +3,7 @@ import * as L from 'leaflet';
 import Geocoder from 'leaflet-control-geocoder';
 import { LocationService } from 'src/app/services/location.service';
 import { Order } from 'src/app/shared/models/order';
-import { HttpClient } from '@angular/common/http'; // Importuj HttpClient
+import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs';
 
 @Component({
@@ -29,7 +29,7 @@ export class MapComponent implements OnInit, OnChanges {
 
   constructor(
     private locationService: LocationService,
-    private http: HttpClient // Wstrzykuj HttpClient
+    private http: HttpClient
   ) {}
 
   ngOnInit(): void {}
@@ -42,7 +42,7 @@ export class MapComponent implements OnInit, OnChanges {
       if (this.readonly && this.addressLatLng) {
         this.showLocationOnReadonlyMode();
       }
-    }, 300);
+    }, 500);
   }
 
   showLocationOnReadonlyMode() {
@@ -70,24 +70,18 @@ export class MapComponent implements OnInit, OnChanges {
   
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.map);
   
-    // Dodaj kontrolkę geokodera
     const GeocoderControl = new Geocoder();
     GeocoderControl.on('markgeocode', (e: any) => {
       const latlng = e.geocode.center;
-      this.setMarker(latlng);
-
-      // Wykonaj odwrotne geokodowanie za pomocą Nominatim
-      
+      this.setMarker(latlng);      
       this.map.setView(latlng, this.MARKER_ZOOM_LEVEL);
     });
   
-    // Dodaj obsługę zdarzenia click
     this.map.on('click', (e: L.LeafletMouseEvent) => {
       this.setMarker(e.latlng);
     });
   }
   
-  // Metoda do odwróconego geokodowania za pomocą Nominatim
   reverseGeocode(lat: number, lng: number) {
     const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&addressdetails=1`;
     return this.http.get(url).pipe(

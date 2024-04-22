@@ -1,13 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Order, OrderAdd } from '../shared/models/order';
-import { Observable, Subscription, tap } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { ToastController } from '@ionic/angular';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root' 
 })
 export class OrderService {
+  pay(order: Order): Observable<any> {
+    throw new Error('Method not implemented.');
+  }
 
   baseURL = 'http://localhost:3300';
 
@@ -15,27 +18,6 @@ export class OrderService {
     private httpClient: HttpClient,
     private toastController: ToastController
   ) { }
-
-  // public addOrder(order: OrderAdd): Subscription {
-  //   console.log('addOrder',order);
-  //   return this.httpClient.post<Order>(`${this.baseURL}/orders/add`, order).pipe(
-  //     tap({
-  //       next: async (order) => {
-  //         console.log('here1');
-          
-  //         // this.updateFoodList();
-  //         // Show toast message for successful addition
-  //         await this.presentToast(`Order created successfully!`);
-  //       },
-  //       error: async (err) => {
-  //         console.log('here2');
-
-  //         // Show toast message for failed addition
-  //         await this.presentToast(`Order create failed!`);
-  //       },
-  //     })
-  //   );
-  // }
 
   postOrder(order: OrderAdd): Subscription{
     console.log('postOrder', order.totalprice, typeof order.totalprice);

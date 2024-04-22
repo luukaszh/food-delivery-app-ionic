@@ -220,10 +220,10 @@ app.post('/food/add', (req, res) => {
 
 app.post('/orders', (req, res) => {
   
-  // jwt.verify(token.token, 'secretKey', (err, authData) => {
-  // if (err){
-  //   res.status(403).send("You do not have permission!")
-  // } else{
+  jwt.verify(token.token, 'secretKey', (err, authData) => {
+  if (err){
+    res.status(403).send("You do not have permission!")
+  } else{
   client.query(`SELECT id FROM orders ORDER BY id`, (err, result) => {
     if (err) {
       console.log('Error:', err);
@@ -253,33 +253,11 @@ app.post('/orders', (req, res) => {
       res.status(200).json({ message: 'Insertion was successful' });
     });
   });
-  // }
-  // });
+  }
+  });
 });
 
 
-
-// app.post('/orders', (req, res) => {
-//   client.query(`Select * from orders`, (err, result) => {
-
-//     const orders_len = result.rows.length;
-//     const formatItems = `${JSON.stringify(req.body.items)}`;
-//     const order = req.body;
-
-//     let insertQuery = `insert into orders(id, items, totalprice, name, address)
-//                          values('${order.id = orders_len + 1}', '${formatItems}', '${order.totalprice}', '${order.name}', '${order.address}')`
-
-//     client.query(insertQuery, (err, result) => {
-//       if (!err) {
-//         res.send('Insertion was successful')
-//       }
-//       else {
-//         res.status(500).send('Error: ' + err.message)
-//       }
-//     })
-//     client.end;
-//   });
-// });
 
 
 const generateToken = (user) => {

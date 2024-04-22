@@ -17,19 +17,13 @@
         <ion-input [(ngModel)]="this.order.address" readonly="true" type="text"></ion-input>
       </ion-item>
     </ion-card>
-      <!-- <form [formGroup]="checkoutForm"> -->
-      <!-- </form> -->
-    <order-items-list [order]="order"></order-items-list>
     <ion-card class="map-card">
       <ion-title size="large">Choose Your Address On Map</ion-title>
       <map [order]="order"></map>
     </ion-card>
-    <div class="buttons-container">
+    <order-items-list [order]="order"></order-items-list>
       <div class="buttons"> 
-        <ion-button (click)="createOrder()">
-          Go To Payment
-        </ion-button>
+        <div #paypal ></div>
       </div>
-    </div>
   </div>
 </ion-content>

@@ -39,7 +39,7 @@ export class CartService {
     }
 
     this.setToCartStorage();
-  }
+  } 
 
   // Method to remove item from cart
   removeItemFromCart(foodId: string): void {

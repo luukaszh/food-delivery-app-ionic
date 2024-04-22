@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { UserService } from "./services/user.service";
 import { User } from "./shared/models/user";
 import { ToastController } from '@ionic/angular';
@@ -7,7 +7,7 @@ import { ToastController } from '@ionic/angular';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuard implements CanActivate {
+export class AuthGuard {
 
   user!: User;
 
@@ -21,8 +21,8 @@ export class AuthGuard implements CanActivate {
     });
   }
 
-  async canActivate() {
-    if (this.userService.isAdminLoggedIn(this.user)) {
+  async canActivate() {    
+    if (this.userService.isAuthorized()) {
       return true;
     } else {
       this.router.navigate(['/login']);
