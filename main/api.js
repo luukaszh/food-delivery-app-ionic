@@ -47,7 +47,6 @@ app.get('/orders', (req, res) => {
 
 app.get('/food/:id', (req, res) => {
   client.query(`Select * from food where id=${req.params.id}`, (err, result) => {
-    console.log('tttttttt', err, result);
     if (!err) {
       res.send(result.rows[0]);
     }
@@ -181,7 +180,6 @@ app.get('/examplefood', (req, res) => {
 })
 
 app.post('/food/add', (req, res) => {
-  console.log('dupaaa', req, res);
   jwt.verify(token.token, 'secretKey', (err, authData) => {
     if (err){
       res.status(403).send("You do not have permission!")
@@ -229,7 +227,6 @@ app.post('/orders', (req, res) => {
       console.log('Error:', err);
       return res.status(500).json({ error: err.message });
     }
-    console.log('dupaaa', req.body.totalprice);
     const existingIds = result.rows.map(row => +row.id);
     let nextId = 1;
 
@@ -240,7 +237,6 @@ app.post('/orders', (req, res) => {
     const formatItems = JSON.stringify(req.body.items);
     const order = req.body;
 
-    console.log('aaaaaaaaaa', nextId, order.name, formatItems, order.totalprice, order.address);
     const insertQuery = `INSERT INTO orders(id, name, items, totalprice, address)
       VALUES('${nextId}', '${order.name}', '${formatItems}', '${order.totalprice}', '${order.address}')`;
 

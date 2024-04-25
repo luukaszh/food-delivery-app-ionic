@@ -35,7 +35,6 @@ export class AppComponent implements OnInit {
     this.user = this.userService.currentUser;
     this.cartSubscription = this.cartService.getCartObservable().subscribe((cart) => {
       this.cart = cart;
-      console.log('Cart Total Count:', this.cart.totalCount);
     });
 
     // Redirect to login page if user is not logged in
