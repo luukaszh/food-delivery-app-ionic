@@ -16,6 +16,7 @@ export class Order {
 export class OrderAdd {
   items!: CartItem[];
   totalprice!: number;
+  userid!: number;
   name!: string;
   address!: string;
   paymentId?: string;

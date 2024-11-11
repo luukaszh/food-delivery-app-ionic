@@ -50,6 +50,7 @@ export class CheckoutPage implements OnInit {
           const order: OrderAdd = {
             items: this.order.items,
             totalprice: this.order.totalPrice,
+            userid: this.userService.currentUser.id,
             name: this.order.name,
             address: this.order.address
           };

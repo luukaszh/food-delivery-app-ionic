@@ -135,32 +135,51 @@ app.post('/users/login', (req, res) => {
 app.post('/users/register', (req, res) => {
   const { name, email, password, isadmin } = req.body;
 
-  client.query(`SELECT * FROM users WHERE email = $1`, [email], (err, result) => {
+  // First, retrieve all existing user IDs
+  client.query(`SELECT id FROM users ORDER BY id`, (err, result) => {
     if (err) {
-      console.error('Error querying users:', err);
+      console.error('Error querying user IDs:', err);
       return res.status(500).json({ message: 'Internal Server Error' });
     }
 
-    const existingUser = result.rows[0];
-
-    if (existingUser) {
-      return res.status(409).json({ message: 'User already exists' });
+    // Generate the next available ID
+    const existingIds = result.rows.map(row => +row.id);
+    let nextId = 1;
+    while (existingIds.includes(nextId)) {
+      nextId++;
     }
 
-    const insertQuery = `INSERT INTO users (name, email, password, isadmin) VALUES ($1, $2, $3, $4)`;
-    const values = [name, email, password, isadmin || false];
+    console.log('Generated next user ID:', nextId); // Debugging line to confirm nextId
 
-    client.query(insertQuery, values, (err, result) => {
+    // Check if the user already exists by email
+    client.query(`SELECT * FROM users WHERE email = $1`, [email], (err, result) => {
       if (err) {
-        console.error('Error inserting user:', err);
+        console.error('Error querying users:', err);
         return res.status(500).json({ message: 'Internal Server Error' });
       }
 
-      console.log('User successfully registered:', name);
-      res.status(200).json({ message: 'User registered successfully' }); 
+      const existingUser = result.rows[0];
+      if (existingUser) {
+        return res.status(409).json({ message: 'User already exists' });
+      }
+
+      // Insert new user with generated ID
+      const insertQuery = `INSERT INTO users (id, name, email, password, isadmin) VALUES ($1, $2, $3, $4, $5)`;
+      const values = [nextId, name, email, password, isadmin || false];
+
+      client.query(insertQuery, values, (err, result) => {
+        if (err) {
+          console.error('Error inserting user:', err);
+          return res.status(500).json({ message: 'Internal Server Error' });
+        }
+
+        console.log('User successfully registered:', name);
+        res.status(200).json({ message: 'User registered successfully', userId: nextId });
+      });
     });
   });
 });
+
 
 app.get('/examplefood', (req, res) => {
   jwt.verify(token.token, 'secretKey', (err, authData) => {
@@ -179,81 +198,102 @@ app.get('/examplefood', (req, res) => {
   });
 })
 
-app.post('/food/add', (req, res) => {
-  jwt.verify(token.token, 'secretKey', (err, authData) => {
-    if (err){
-      res.status(403).send("You do not have permission!")
-    } else{
-      const food = req.body;
+app.post('/users/register', (req, res) => {
+  const { name, email, password, isadmin } = req.body;
 
-      client.query(`SELECT id FROM food ORDER BY id`, (err, result) => {
-        if (err) {
-          console.log('Error:', err);
-          return res.status(500).json({ error: err.message });
-        }
-
-        const existingIds = result.rows.map(row => +row.id);
-        let nextId = 1;
-
-        while (existingIds.includes(nextId)) {
-          nextId++;
-        }
-
-        const insertQuery = `INSERT INTO food(id, name, price, cooktime, imageurl, description)
-        VALUES('${nextId}', '${food.name}', '${food.price}', '${food.cooktime}', '${food.imageurl}', '${food.description}')`;
-
-
-        client.query(insertQuery, (err, result) => {
-          if (err) {
-            console.log('Error:', err);
-            return res.status(500).json({ error: 'Insertion was NOT successful: ' + err.message });
-          }
-
-          res.status(200).json({ message: 'Insertion was successful' });
-        });
-      });
+  // Query to get all existing IDs in the users table
+  client.query(`SELECT id FROM users ORDER BY id`, (err, result) => {
+    if (err) {
+      console.error('Error querying user IDs:', err);
+      return res.status(500).json({ message: 'Internal Server Error' });
     }
+
+    // Generate the next available ID
+    const existingIds = result.rows.map(row => +row.id);
+    let nextId = 1;
+    while (existingIds.includes(nextId)) {
+      nextId++;
+    }
+
+    // Check if the user already exists by email
+    client.query(`SELECT * FROM users WHERE email = $1`, [email], (err, result) => {
+      if (err) {
+        console.error('Error querying users:', err);
+        return res.status(500).json({ message: 'Internal Server Error' });
+      }
+
+      const existingUser = result.rows[0];
+
+      if (existingUser) {
+        return res.status(409).json({ message: 'User already exists' });
+      }
+      
+      
+      // Insert new user with generated ID
+      const insertQuery = `INSERT INTO users (name, email, password, isadmin, id) VALUES ($1, $2, $3, $4, $5)`;
+      const values = [name, email, password, isadmin || false, nextId];
+
+      client.query(insertQuery, values, (err, result) => {
+        if (err) {
+          console.error('Error inserting user:', err);
+          return res.status(500).json({ message: 'Internal Server Error' });
+        }
+        console.log('useridd', nextId);
+        console.log('User successfully registered:', name);
+        res.status(200).json({ message: 'User registered successfully' });
+      });
+    });
   });
 });
 
 app.post('/orders', (req, res) => {
   
   jwt.verify(token.token, 'secretKey', (err, authData) => {
-  if (err){
-    res.status(403).send("You do not have permission!")
-  } else{
-  client.query(`SELECT id FROM orders ORDER BY id`, (err, result) => {
     if (err) {
-      console.log('Error:', err);
-      return res.status(500).json({ error: err.message });
+      return res.status(403).send("You do not have permission!");
     }
-    const existingIds = result.rows.map(row => +row.id);
-    let nextId = 1;
 
-    while (existingIds.includes(nextId)) {
-      nextId++;
-    }
-    const orders_len = result.rows.length;
-    const formatItems = JSON.stringify(req.body.items);
-    const order = req.body;
-
-    const insertQuery = `INSERT INTO orders(id, name, items, totalprice, address)
-      VALUES('${nextId}', '${order.name}', '${formatItems}', '${order.totalprice}', '${order.address}')`;
-
-    client.query(insertQuery, (err, result) => {
+    client.query(`SELECT id FROM orders ORDER BY id`, (err, result) => {
       if (err) {
         console.log('Error:', err);
-        return res.status(500).json({ error: 'Insertion was NOT successful: ' + err.message });
+        return res.status(500).json({ error: err.message });
       }
 
-      res.status(200).json({ message: 'Insertion was successful' });
+      const existingIds = result.rows.map(row => +row.id);
+      let nextId = 1;
+      while (existingIds.includes(nextId)) {
+        nextId++;
+      }
+
+      const order = req.body;
+
+      // Extract only the 'id' values from each item in req.body.items
+      const foodIds = order.items.map(item => parseInt(item.food.id, 10));
+
+      const insertQuery = `INSERT INTO orders(id, name, totalprice, address, userid, foodid)
+        VALUES($1, $2, $3, $4, $5, $6::int[])`;
+
+      const values = [
+        nextId,
+        order.name,
+        // JSON.stringify(order.items),
+        order.totalprice,
+        order.address,
+        order.userid,
+        foodIds // Pass the array of IDs directly
+      ];
+
+      client.query(insertQuery, values, (err, result) => {
+        if (err) {
+          console.log('Error:', err);
+          return res.status(500).json({ error: 'Insertion was NOT successful: ' + err.message });
+        }
+
+        res.status(200).json({ message: 'Insertion was successful' });
+      });
     });
   });
-  }
-  });
 });
-
-
 
 
 const generateToken = (user) => {
