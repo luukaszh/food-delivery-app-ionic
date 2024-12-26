@@ -33,6 +33,13 @@ export class OrderService {
       })
   }
 
+  getOrders(userId: number): Observable<Order[]> {
+    const url = `${this.baseURL}/orders`;
+    const params = { userid: userId.toString() };
+  
+    return this.httpClient.get<Order[]>(url, { params });
+  }  
+
   private async presentToast(message: string): Promise<void> {
     const toast = await this.toastController.create({
       message: message,

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { BehaviorSubject, Observable, Subscription, tap } from "rxjs";
 import { Food } from "../shared/models/food";
 import { FoodAdd } from "../shared/interfaces/FoodAdd";
@@ -79,8 +79,10 @@ export class FoodService {
   }
 
   // Method to get a food item by its ID
-  public getFoodById(foodId: string): Observable<Food> {
-    return this.httpClient.get<Food>(`${this.baseURL}/food/${foodId}`);
+  getFoodByIds(ids: number[]): Observable<Food[]> {
+    const params = new HttpParams().set('ids', ids.join(',')); // Tworzenie parametrów zapytania
+
+    return this.httpClient.get<Food[]>(`${this.baseURL}/food`, { params });
   }
 
   // Method to update the food list after any CRUD operation

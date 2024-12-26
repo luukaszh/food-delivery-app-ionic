@@ -1,0 +1,69 @@
+ion-thumbnail {
+    width: 20%;
+    height: 20%;
+  
+    img {
+      border-radius: 10px;
+    }
+  }
+  
+  .total-price {
+    margin-left: 15px;
+    font-weight: bold;
+    color: #fe7240;
+  }
+  
+  .price {
+    font-weight: bold;
+    font-size: 17px;
+    color: #fe7240;
+  }
+  
+  .checkout-button {
+    padding: 0 15px;
+    /* Shorter notation for padding */
+  }
+  
+  .total-price {
+    float: right;
+    margin-right: 15px;
+    padding-top: 10px;
+    color: #fe7240;
+  }
+  
+  .trash-icon:hover {
+    transform: scale(1.2);
+    transition: transform 0.2s ease;
+    cursor: pointer;
+  }
+  
+  /* Adjusting ion-select styles */
+  .ion-item-select {
+    display: inline-block;
+  }
+  
+  .ion-select {
+    font-size: 18px;
+  }
+  
+  .empty-container {
+    display: grid;
+    place-items: center;
+  }
+  
+  h1 {
+    color: #fe7240;
+  }
+  
+  ion-item {
+    cursor: default;
+    border-radius: 1rem;
+  }
+  
+  ion-item:hover {
+    --background-hover: var(--ion-item-background-hover, #f4f5f8);
+  }
+  
+  ion-item:focus-within {
+    --background-hover: var(--ion-item-background-hover, #f4f5f8);
+  }

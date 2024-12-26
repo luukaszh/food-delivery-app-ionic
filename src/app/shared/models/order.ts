@@ -11,6 +11,7 @@ export class Order {
   paymentId?: string;
   createdAt?: string;
   status?: string;
+  foodid?: number[];
 }
 
 export class OrderAdd {

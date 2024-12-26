@@ -33,26 +33,28 @@ app.get('/food', (req, res) => {
   client.end;
 })
 
-app.get('/orders', (req, res) => {
-  client.query(`Select * from orders`, (err, result) => {
-    if (!err) {
-      res.send(result.rows
-      );
-    } else {
-      console.log(err, 'error')
-    }
-  });
-  client.end;
-})
+app.get('/food', (req, res) => {
+  const ids = req.query.ids; // Oczekuje tablicy ID w parametrze zapytania
 
-app.get('/food/:id', (req, res) => {
-  client.query(`Select * from food where id=${req.params.id}`, (err, result) => {
-    if (!err) {
-      res.send(result.rows[0]);
+  if (!ids) {
+    return res.status(400).send('Food IDs are required.');
+  }
+
+  const idsArray = Array.isArray(ids) ? ids : ids.split(','); // Obsługa przypadku, gdy ids to string
+
+  // Przygotowanie zapytania z użyciem parametrów
+  const query = 'SELECT * FROM food WHERE id = ANY($1::int[])';
+
+  client.query(query, [idsArray], (err, result) => {
+    if (err) {
+      console.error('Error:', err);
+      return res.status(500).send('Failed to fetch food data.');
     }
+
+    res.status(200).json(result.rows);
   });
-  client.end;
-})
+});
+
 
 app.delete('/food/:id', (req, res) => {
   jwt.verify(token.token, 'secretKey', (err, authData) => {
@@ -270,14 +272,14 @@ app.post('/orders', (req, res) => {
       // Extract only the 'id' values from each item in req.body.items
       const foodIds = order.items.map(item => parseInt(item.food.id, 10));
 
-      const insertQuery = `INSERT INTO orders(id, name, totalprice, address, userid, foodid)
+      const insertQuery = `INSERT INTO orders(id, name, totalPrice, address, userid, foodid)
         VALUES($1, $2, $3, $4, $5, $6::int[])`;
 
       const values = [
         nextId,
         order.name,
         // JSON.stringify(order.items),
-        order.totalprice,
+        order.totalPrice,
         order.address,
         order.userid,
         foodIds // Pass the array of IDs directly
@@ -291,6 +293,54 @@ app.post('/orders', (req, res) => {
 
         res.status(200).json({ message: 'Insertion was successful' });
       });
+    });
+  });
+});
+
+
+app.get('/orders', (req, res) => {
+  // Pobranie tokena z nagłówka autoryzacji
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({ message: 'Token not provided' });
+  }
+
+  // Weryfikacja tokena JWT
+  jwt.verify(token, 'secretKey', (err, authData) => {
+    if (err) {
+      return res.status(403).json({ message: 'Invalid token' });
+    }
+
+    const { userid } = req.query; // Zakładam, że userid będzie przesyłane jako query param
+
+    // Jeżeli brak userid, zwróć błąd
+    if (!userid) {
+      return res.status(400).json({ message: 'userid is required' });
+    }
+
+    // Zapytanie SQL
+    let query;
+    const values = [];
+    if (parseInt(userid, 10) === 1) {
+      // Admin - pobiera wszystkie zamówienia
+      query = 'SELECT * FROM orders ORDER BY id';
+    } else {
+      // Zwykły użytkownik - pobiera zamówienia tylko dla swojego userid
+      query = 'SELECT * FROM orders WHERE userid = $1 ORDER BY id';
+      values.push(userid);
+    }
+
+    // Wykonanie zapytania do bazy danych
+    client.query(query, values, (err, result) => {
+      if (err) {
+        console.log('Error:', err);
+        return res.status(500).json({ error: 'Failed to fetch orders: ' + err.message });
+      }
+
+      // Zwrócenie wyników
+      res.status(200).json(result.rows);
     });
   });
 });

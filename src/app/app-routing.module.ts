@@ -34,6 +34,11 @@ const routes: Routes = [
     path: 'checkout',
     loadChildren: () => import('./pages/checkout/checkout.module').then( m => m.CheckoutPageModule),
     canActivate: [AuthGuard]
+  },
+  {
+    path: 'order',
+    loadChildren: () => import('./pages/order/order.module').then( m => m.OrderPageModule),
+    canActivate: [AuthGuard]
   }
 
 ];
