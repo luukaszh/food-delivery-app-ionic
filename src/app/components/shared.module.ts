@@ -7,6 +7,7 @@ import { SearchComponent } from './search/search.component';
 import { ModalComponent } from './modal/modal.component';
 import { OrderItemsListComponent } from './order-items-list/order-items-list.component';
 import { MapComponent } from './map/map.component';
+import { ModalListComponent } from './modal copy/modal-list.component';
 
 @NgModule({
   imports: [
@@ -17,12 +18,14 @@ import { MapComponent } from './map/map.component';
   declarations: [
     SearchComponent,
     ModalComponent,
+    ModalListComponent,
     OrderItemsListComponent,
     MapComponent
   ],
   exports: [
     SearchComponent,
     ModalComponent,
+    ModalListComponent,
     OrderItemsListComponent,
     MapComponent
   ],

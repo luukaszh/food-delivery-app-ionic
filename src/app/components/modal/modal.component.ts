@@ -20,7 +20,7 @@ export class ModalComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log(this.foodData); // Log the received food data when the component initializes
+    console.log('ModalComponent foodData',this.foodData); // Log the received food data when the component initializes
   }
 
   async closeModal() {

@@ -33,7 +33,7 @@ app.get('/food', (req, res) => {
   client.end;
 })
 
-app.get('/food', (req, res) => {
+app.get('/foodids', (req, res) => {
   const ids = req.query.ids; // Oczekuje tablicy ID w parametrze zapytania
 
   if (!ids) {

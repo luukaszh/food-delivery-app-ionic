@@ -82,7 +82,7 @@ export class FoodService {
   getFoodByIds(ids: number[]): Observable<Food[]> {
     const params = new HttpParams().set('ids', ids.join(',')); // Tworzenie parametrów zapytania
 
-    return this.httpClient.get<Food[]>(`${this.baseURL}/food`, { params });
+    return this.httpClient.get<Food[]>(`${this.baseURL}/foodids`, { params });
   }
 
   // Method to update the food list after any CRUD operation

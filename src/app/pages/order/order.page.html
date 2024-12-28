@@ -9,7 +9,7 @@
 
 <ion-content class="container">
 
-  <ng-container *ngIf="orders.length < 1; else cartNotEmpty">
+  <ng-container *ngIf="orders.length < 1; else orderNotEmpty">
     <div class="empty-container">
       <div class="empty-img-container">
         <img class="image-logo" src="/assets/epty-cart.webp">
@@ -20,22 +20,31 @@
     </div>
   </ng-container>
 
-  <ng-template #cartNotEmpty>
+  <ng-template #orderNotEmpty>
     <ion-list>
-      <ion-item *ngFor="let orderItem of orders">
+      <ion-item class="order-items" *ngFor="let orderItem of orders" (click)="orderItem.foodid ? presentModal(orderItem.foodid) : null">
         <ion-label>
-          <h1 class="name">{{ orderItem.id }}</h1>
-          <h1 class="name">{{ orderItem.name }}</h1>
-          <h1 class="price">{{ orderItem.totalPrice }}</h1>
-          <h1 class="price">{{ orderItem.address }}</h1>
+          <div>
+            <p class="order-id-title">Number: </p>
+            <p class="order-id">{{ orderItem.id }}</p>
+          </div>
+
+          <div>
+            <p class="order-name-title">User Name: </p>
+            <p *ngIf="isAdmin" class="order-name">{{ orderItem.name }}</p>
+          </div>
+
+          <div>
+            <p class="order-total-price-title">Total Price: </p>
+            <p class="order-total-price">{{ orderItem.totalPrice }}</p>
+          </div>
+
+          <div>
+            <p class="order-address-title">Address: </p>
+            <p class="order-address">{{ orderItem.address }}</p>
+          </div>
         </ion-label>
       </ion-item>
     </ion-list>
-
-    <!-- <div class="checkout">
-      <div class="checkout-clear-container">
-        <p class="total-price">Total: {{ orders.totalPrice | currency }}</p>
-      </div>
-    </div> -->
   </ng-template>
 </ion-content>
