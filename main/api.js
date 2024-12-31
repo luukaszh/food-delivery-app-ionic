@@ -272,14 +272,14 @@ app.post('/orders', (req, res) => {
       // Extract only the 'id' values from each item in req.body.items
       const foodIds = order.items.map(item => parseInt(item.food.id, 10));
 
-      const insertQuery = `INSERT INTO orders(id, name, totalPrice, address, userid, foodid)
+      const insertQuery = `INSERT INTO orders(id, name, totalprice, address, userid, foodid)
         VALUES($1, $2, $3, $4, $5, $6::int[])`;
 
       const values = [
         nextId,
         order.name,
         // JSON.stringify(order.items),
-        order.totalPrice,
+        order.totalprice,
         order.address,
         order.userid,
         foodIds // Pass the array of IDs directly

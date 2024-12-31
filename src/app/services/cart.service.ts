@@ -84,7 +84,7 @@ export class CartService {
 
     const roundedTotalPrice = Math.round(totalPrice * 100) / 100;
 
-    this.cart.totalPrice = roundedTotalPrice;
+    this.cart.totalprice = roundedTotalPrice;
     this.cart.totalCount = totalCount;
 
     localStorage.setItem('Cart', JSON.stringify(this.cart));

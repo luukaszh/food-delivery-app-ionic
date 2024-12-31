@@ -38,7 +38,7 @@ export class CheckoutPage implements OnInit {
               {
                 amount: {
                   currency_code: 'USD',
-                  value: this.order.totalPrice.toString(),
+                  value: this.order.totalprice.toString(),
                 },
               },
             ],
@@ -49,7 +49,7 @@ export class CheckoutPage implements OnInit {
           
           const order: OrderAdd = {
             items: this.order.items,
-            totalprice: this.order.totalPrice,
+            totalprice: this.order.totalprice,
             userid: this.userService.currentUser.id,
             name: this.order.name,
             address: this.order.address
@@ -81,7 +81,7 @@ export class CheckoutPage implements OnInit {
     let {name, address} = this.userService.currentUser;
     const cart = this.cartService.getCart();
     this.order.items = cart.items;
-    this.order.totalPrice = cart.totalPrice;
+    this.order.totalprice = cart.totalprice;
 
     this.order.name = name;
   }
