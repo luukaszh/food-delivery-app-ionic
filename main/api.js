@@ -272,17 +272,17 @@ app.post('/orders', (req, res) => {
       // Extract only the 'id' values from each item in req.body.items
       const foodIds = order.items.map(item => parseInt(item.food.id, 10));
 
-      const insertQuery = `INSERT INTO orders(id, name, totalprice, address, userid, foodid)
-        VALUES($1, $2, $3, $4, $5, $6::int[])`;
+      const insertQuery = `INSERT INTO orders(id, name, totalprice, address, userid, foodid, status)
+        VALUES($1, $2, $3, $4, $5, $6::int[], $7)`;
 
       const values = [
         nextId,
         order.name,
-        // JSON.stringify(order.items),
         order.totalprice,
         order.address,
         order.userid,
-        foodIds // Pass the array of IDs directly
+        foodIds,
+        order.status
       ];
 
       client.query(insertQuery, values, (err, result) => {
@@ -339,8 +339,74 @@ app.get('/orders', (req, res) => {
         return res.status(500).json({ error: 'Failed to fetch orders: ' + err.message });
       }
 
+      // Mapowanie tylko statusu na liczbę
+      const mappedResults = result.rows.map(order => ({
+        ...order,
+        status: parseInt(order.status, 10), // Konwersja statusu na liczbę całkowitą
+      }));
+      
       // Zwrócenie wyników
-      res.status(200).json(result.rows);
+      res.status(200).json(mappedResults);
+    });
+  });
+});
+
+app.put('/orders/:id', (req, res) => {
+  // Pobranie tokena z nagłówka autoryzacji
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({ message: 'Token not provided' });
+  }
+
+  // Weryfikacja tokena JWT
+  jwt.verify(token, 'secretKey', (err, authData) => {
+    if (err) {
+      return res.status(403).json({ message: 'Invalid token' });
+    }
+
+    const orderId = req.params.id; // Pobranie ID zamówienia z URL
+    const order = req.body; // Zamówienie do zaktualizowania z ciała żądania
+
+    // Zapytanie SQL do aktualizacji zamówienia
+    const updateQuery = `
+      UPDATE orders
+      SET 
+        name = $1,
+        totalPrice = $2,
+        address = $3,
+        userid = $4,
+        status = $5,
+        foodid = $6::int[]
+      WHERE id = $7
+      RETURNING *;
+    `;
+
+    const values = [
+      order.name,
+      order.totalPrice,
+      order.address,
+      order.userid,
+      order.status,
+      order.foodid, // Zakładam, że foodid jest tablicą
+      orderId
+    ];
+
+    // Wykonanie zapytania do bazy danych
+    client.query(updateQuery, values, (err, result) => {
+      if (err) {
+        console.log('Error:', err);
+        return res.status(500).json({ error: 'Failed to update order: ' + err.message });
+      }
+
+      // Jeżeli nie znaleziono zamówienia
+      if (result.rows.length === 0) {
+        return res.status(404).json({ message: 'Order not found' });
+      }
+
+      // Zwrócenie zaktualizowanego zamówienia
+      res.status(200).json({ message: 'Order updated successfully', order: result.rows[0] });
     });
   });
 });

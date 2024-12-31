@@ -94,3 +94,27 @@ ion-thumbnail {
   .order-items:hover {
     opacity: 0.5; /* Wyszarzenie elementu przy najechaniu */
   }
+
+  ion-col {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  
+  .custom-badge {
+    font-size: 18px;
+    padding: 8px 16px;
+    margin-top: 30px;
+    white-space: normal; /* Pozwól na zawijanie tekstu w przypadku potrzeby */
+    word-wrap: break-word; /* Pozwól na zawijanie długich słów */
+    display: inline-block;
+    max-width: 100%; /* Zapewnia responsywność */
+    width: 100%;
+  }
+  
+  @media (max-width: 768px) { /* Dostosowanie dla mniejszych ekranów */
+    .custom-badge {
+      font-size: 14px;  /* Zmniejsz rozmiar czcionki dla mniejszych ekranów */
+      padding: 6px 12px; /* Zmniejsz padding dla mniejszych ekranów */
+    }
+  }

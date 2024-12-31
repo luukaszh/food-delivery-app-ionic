@@ -52,7 +52,8 @@ export class CheckoutPage implements OnInit {
             totalprice: this.order.totalprice,
             userid: this.userService.currentUser.id,
             name: this.order.name,
-            address: this.order.address
+            address: this.order.address,
+            status: 1
           };
 
           const payment = await actions.order.capture();

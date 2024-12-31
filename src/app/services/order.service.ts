@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Order, OrderAdd } from '../shared/models/order';
 import { Observable, Subscription } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ToastController } from '@ionic/angular';
 
 @Injectable({
@@ -19,8 +19,8 @@ export class OrderService {
     private toastController: ToastController
   ) { }
 
-  postOrder(order: OrderAdd): Subscription{
-    console.log('postOrder', order.totalprice, typeof order.totalprice);
+  public postOrder(order: OrderAdd): Subscription{
+    console.log('postOrder', order);
     
     return this.httpClient.post<OrderAdd>(this.baseURL + '/orders', order)
       .subscribe({
@@ -33,7 +33,7 @@ export class OrderService {
       })
   }
 
-  getOrders(userId: number): Observable<Order[]> {
+  public getOrders(userId: number): Observable<Order[]> {
     const url = `${this.baseURL}/orders`;
     const params = { userid: userId.toString() };
   
@@ -47,5 +47,9 @@ export class OrderService {
       position: 'bottom'
     });
     toast.present();
+  }
+
+  public updateOrder(order: Order): Observable<any> {
+    return this.httpClient.put(`${this.baseURL}/orders/${order.id}`, order);
   }
 }

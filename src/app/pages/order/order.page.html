@@ -22,28 +22,52 @@
 
   <ng-template #orderNotEmpty>
     <ion-list>
-      <ion-item class="order-items" *ngFor="let orderItem of orders" (click)="orderItem.foodid ? presentModal(orderItem.foodid) : null">
-        <ion-label>
-          <div>
-            <p class="order-id-title">Number: </p>
-            <p class="order-id">{{ orderItem.id }}</p>
-          </div>
+      <ion-item class="order-items" *ngFor="let orderItem of orders">
+        <ion-grid>
+          <!-- Pierwszy ion-label zajmujący 3/4 szerokości -->
+          <ion-row>
+            <ion-col size="9">
+              <ion-label (click)="orderItem.foodid ? presentModal(orderItem.foodid) : null">
+                <div>
+                  <p class="order-id-title">Number: </p>
+                  <p class="order-id">{{ orderItem.id }}</p>
+                </div>
 
-          <div>
-            <p class="order-name-title">User Name: </p>
-            <p *ngIf="isAdmin" class="order-name">{{ orderItem.name }}</p>
-          </div>
+                <div>
+                  <p class="order-name-title">User Name: </p>
+                  <p *ngIf="isAdmin" class="order-name">{{ orderItem.name }}</p>
+                </div>
 
-          <div>
-            <p class="order-total-price-title">Total Price: </p>
-            <p class="order-total-price">{{ orderItem.totalprice }}</p>
-          </div>
+                <div>
+                  <p class="order-total-price-title">Total Price: </p>
+                  <p class="order-total-price">{{ orderItem.totalprice }}</p>
+                </div>
 
-          <div>
-            <p class="order-address-title">Address: </p>
-            <p class="order-address">{{ orderItem.address }}</p>
-          </div>
-        </ion-label>
+                <div>
+                  <p class="order-address-title">Address: </p>
+                  <p class="order-address">{{ orderItem.address }}</p>
+                </div>
+              </ion-label>
+            </ion-col>
+
+            <ion-col size="12" size-md="3"> <!-- Zmiana na size="12" dla mniejszych ekranów -->
+              <ion-label>
+                <ion-item lines="none">
+                  <ng-container *ngIf="isAdmin; else readOnly">
+                    <ion-select [(ngModel)]="orderItem.status" (ionChange)="updateStatus(orderItem)">
+                      <ion-select-option *ngFor="let status of statuses" [value]="status.value">
+                        {{ status.label }}
+                      </ion-select-option>
+                    </ion-select>
+                  </ng-container>
+                  <ng-template #readOnly>
+                    <ion-badge class="custom-badge" color="primary">{{ getStatusLabel(orderItem.status ?? 0) }}</ion-badge>
+                  </ng-template>
+                </ion-item>
+              </ion-label>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
       </ion-item>
     </ion-list>
   </ng-template>
