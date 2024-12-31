@@ -31,8 +31,8 @@
             <ion-item routerDirection="root" [routerLink]="['/order']" detail="false" routerLinkActive="selected">
               <div class="order-container">
                 <ion-icon class="bag-icon" name="bag-check" aria-hidden="true" slot="start"></ion-icon>
-                <div *ngIf="cart.totalCount!=0" class="order-count-container">
-                  <div class="order-count">{{cart.totalCount}}</div>
+                <div *ngIf="orderLen!=undefined" class="order-count-container">
+                  <div class="order-count">{{orderLen}}</div>
                 </div>
               </div>
             <ion-label class="ion-label-order">Your Order</ion-label>
