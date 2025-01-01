@@ -4,6 +4,7 @@ const app = express();
 const cors = require(`cors`);
 const bodyParser = require('body-parser');
 const jwt = require("jsonwebtoken");
+const sendEmail = require('./mailer');
 
 
 app.use(cors());
@@ -411,6 +412,41 @@ app.put('/orders/:id', (req, res) => {
   });
 });
 
+app.post('/send-email', (req, res) => {
+  const { email, subject, text } = req.body;
+
+  // Walidacja danych wejściowych
+  if (!email || !subject || !text) {
+    return res.status(400).json({ message: 'Missing required fields: email, subject, or text' });
+  }
+
+  // Konfiguracja transportera
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'your-email@gmail.com', // Twoje dane logowania
+      pass: 'your-app-password',    // Hasło aplikacji lub inna metoda autoryzacji
+    },
+  });
+
+  const mailOptions = {
+    from: 'your-email@gmail.com',  // Twój e-mail nadawcy
+    to: email,                     // Adres odbiorcy (dynamicznie z req.body)
+    subject: subject,              // Temat wiadomości
+    text: text,                    // Treść wiadomości
+  };
+
+  // Wysyłanie wiadomości e-mail
+  transporter.sendMail(mailOptions, (err, info) => {
+    if (err) {
+      console.error('Error sending email:', err);
+      return res.status(500).json({ message: 'Failed to send email', error: err.message });
+    }
+
+    console.log('Email sent:', info.response);
+    res.status(200).json({ message: 'Email sent successfully' });
+  });
+});
 
 const generateToken = (user) => {
   const token = jwt.sign({
