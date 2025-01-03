@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>Admin</ion-title>
+    <ion-title>{{adminTransl | translate}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -11,20 +11,20 @@
   <ion-card>
     <ion-card-content class="edit-card">
       <div class="header">
-        <ion-title>Add Pizza</ion-title>
+        <ion-title>{{addTransl | translate}}</ion-title>
       </div>
       <form [formGroup]="addForm">
 
         <div *ngFor="let field of formFields">
           <ion-item>
-            <ion-label position="floating">{{ field.label }}</ion-label>
+            <ion-label position="floating">{{ field.label | translate }}</ion-label>
             <ion-input [type]="field.type" [placeholder]="field.placeholder" [formControlName]="field.name"></ion-input>
           </ion-item>
         </div>
 
         <div class="subbmit-button-add">
           <ion-button color="primary" expand="block" (click)="onAddSubmit()"
-            [disabled]="this.addForm.invalid">Add</ion-button>
+            [disabled]="this.addForm.invalid">{{addTransl | translate}}</ion-button>
         </div>
 
       </form>
@@ -34,11 +34,11 @@
   <ion-card>
     <ion-card-content class="delete-card">
       <div class="header">
-        <ion-title>Delete Pizza</ion-title>
+        <ion-title>{{deleteTransl | translate}}</ion-title>
       </div>
 
       <ion-item>
-        <ion-select class="ion-select-del-food" [(ngModel)]="selected" placeholder="Pizza">
+        <ion-select class="ion-select-del-food" [(ngModel)]="selected" placeholder="Pizza" [cancelText]="cancelTransl | translate">
           <ion-select-option *ngFor="let food of foods" [value]="food.id">
             {{food.name}}
           </ion-select-option>
@@ -46,7 +46,7 @@
       </ion-item>
 
       <div class="subbmit-button-delete">
-        <ion-button color="primary" expand="block" (click)="onDeleteSubmit()" [disabled]="!selected">Delete</ion-button>
+        <ion-button color="primary" expand="block" (click)="onDeleteSubmit()" [disabled]="!selected">{{deleteTransl | translate}}</ion-button>
       </div>
 
     </ion-card-content>
@@ -55,11 +55,11 @@
   <ion-card>
     <ion-card-content class="edit-card">
       <div class="header">
-        <ion-title>Edit Pizza</ion-title>
+        <ion-title>{{editTransl | translate}}</ion-title>
       </div>
 
       <ion-item>
-        <ion-select class="ion-select-del-food" [(ngModel)]="editFoodSelected" placeholder="Pizza" (ngModelChange)="updateEditForm()">
+        <ion-select class="ion-select-del-food" [(ngModel)]="editFoodSelected" placeholder="Pizza" (ngModelChange)="updateEditForm()" [cancelText]="cancelTransl | translate">
           <ion-select-option *ngFor="let food of foods" [value]="food">
             {{food.name}}
           </ion-select-option>
@@ -74,7 +74,7 @@
           </ion-item>
         </div>
         <div class="subbmit-button-add">
-          <ion-button color="primary" expand="block" (click)="onEditSubmit()" [disabled]="editForm.invalid">Edit</ion-button>
+          <ion-button color="primary" expand="block" (click)="onEditSubmit()" [disabled]="editForm.invalid">{{editTransl | translate}}</ion-button>
         </div>
       </form>
 

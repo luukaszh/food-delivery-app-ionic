@@ -5,6 +5,7 @@ import { LocationService } from 'src/app/services/location.service';
 import { Order } from 'src/app/shared/models/order';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'map',
@@ -12,6 +13,8 @@ import { map } from 'rxjs';
   styleUrls: ['./map.component.scss'],
 })
 export class MapComponent implements OnInit, OnChanges {
+
+  findLocTransl = this.translateSrv.instant('FIND_LOCATION');
 
   @Input() order!: Order;
   @Input() readonly = false;
@@ -29,7 +32,8 @@ export class MapComponent implements OnInit, OnChanges {
 
   constructor(
     private locationService: LocationService,
-    private http: HttpClient
+    private http: HttpClient,
+    private translateSrv: TranslateService
   ) {}
 
   ngOnInit(): void {}

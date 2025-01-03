@@ -11,15 +11,15 @@
         </ion-thumbnail>
         <ion-label>
           <h2>{{ item.food.name }}</h2>
-          <p>Price: {{ item.food.price | currency}}</p>
-          <p>Quantity: {{ item.quantity }}</p>
-          <p>Item Price: {{ item.price | currency}}</p>
+          <p>{{priceTransl | translate}}: {{ item.food.price | currency}}</p>
+          <p>{{quantityTransl | translate}}: {{ item.quantity }}</p>
+          <p>{{itemPriceTransl | translate}}: {{ item.price | currency}}</p>
         </ion-label>
       </ion-item>
     </ion-list>
 
     <ion-item lines="none">
-      <ion-label slot="start" class="total-label"><strong>Total: {{ order.totalprice | currency}}</strong></ion-label>
+      <ion-label slot="start" class="total-label"><strong>{{totalTransl | translate}}: {{ order.totalprice | currency}}</strong></ion-label>
     </ion-item>
   </ion-card-content>
 </ion-card>

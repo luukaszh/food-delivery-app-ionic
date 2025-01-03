@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -14,11 +15,17 @@ export class RegisterPage implements OnInit {
   isSubmit = false; // Flag to track form submission status
   returnUrl = ''; // Return URL after registration
 
+  nameTranslation = this.translateSrv.instant("NAME")
+  emailTranslation = this.translateSrv.instant("EMAIL")
+  passwordTranslation = this.translateSrv.instant("PASSWORD")
+  registerTranslation = this.translateSrv.instant("REGISTER")
+
   constructor(
     private formBuilder: FormBuilder,
     private userService: UserService,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private translateSrv: TranslateService
   ) { }
 
   ngOnInit(): void {

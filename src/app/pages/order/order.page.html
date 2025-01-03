@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>Order</ion-title>
+    <ion-title>{{orderTranslation | translate}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -15,7 +15,7 @@
         <img class="image-logo" src="/assets/epty-cart.webp">
       </div>
       <div class="empty-text-container">
-        <h1>You do not have any order</h1>
+        <h1>{{cartEmptyTranslation | translate}}</h1>
       </div>
     </div>
   </ng-container>
@@ -29,22 +29,22 @@
             <ion-col size="9">
               <ion-label (click)="orderItem.foodid ? presentModal(orderItem.foodid) : null">
                 <div>
-                  <p class="order-id-title">Number: </p>
+                  <p class="order-id-title">{{numberTranslation | translate}}: </p>
                   <p class="order-id">{{ orderItem.id }}</p>
                 </div>
 
                 <div>
-                  <p class="order-name-title">User Name: </p>
+                  <p class="order-name-title">{{userNameTranslation | translate}}: </p>
                   <p *ngIf="isAdmin" class="order-name">{{ orderItem.name }}</p>
                 </div>
 
                 <div>
-                  <p class="order-total-price-title">Total Price: </p>
-                  <p class="order-total-price">{{ orderItem.totalprice }}</p>
+                  <p class="order-total-price-title">{{totalPriceTranslation | translate}}: </p>
+                  <p class="order-total-price">{{ orderItem.totalprice | currency }}</p>
                 </div>
 
                 <div>
-                  <p class="order-address-title">Address: </p>
+                  <p class="order-address-title">{{addressTranslation | translate}}: </p>
                   <p class="order-address">{{ orderItem.address }}</p>
                 </div>
               </ion-label>
@@ -54,14 +54,14 @@
               <ion-label>
                 <ion-item lines="none">
                   <ng-container *ngIf="isAdmin; else readOnly">
-                    <ion-select [(ngModel)]="orderItem.status" (ionChange)="updateStatus(orderItem)">
+                    <ion-select [(ngModel)]="orderItem.status" (ionChange)="updateStatus(orderItem)" [cancelText]="cancelTransl | translate">
                       <ion-select-option *ngFor="let status of statuses" [value]="status.value">
-                        {{ status.label }}
+                        {{ status.label | translate}}
                       </ion-select-option>
                     </ion-select>
                   </ng-container>
                   <ng-template #readOnly>
-                    <ion-badge class="custom-badge" color="primary">{{ getStatusLabel(orderItem.status ?? 0) }}</ion-badge>
+                    <ion-badge class="custom-badge" color="primary">{{ getStatusLabel(orderItem.status ?? 0) | translate}}</ion-badge>
                   </ng-template>
                 </ion-item>
               </ion-label>

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController, ToastController } from '@ionic/angular';
+import { TranslateService } from '@ngx-translate/core';
 import { ModalListComponent } from 'src/app/components/modal copy/modal-list.component';
 import { ModalComponent } from 'src/app/components/modal/modal.component';
 import { EmailService } from 'src/app/services/email.service';
@@ -23,14 +24,24 @@ export class OrderPage implements OnInit {
 
   subject: string = 'Order Status Update';
 
+  numberTranslation = this.translateSrv.instant('NUMBER');
+  userNameTranslation = this.translateSrv.instant('USER_NAME');
+  totalPriceTranslation = this.translateSrv.instant('TOTAL_PRICE');
+  addressTranslation = this.translateSrv.instant('ADDRESS');
+  orderTranslation = this.translateSrv.instant('ORDER');
+  cartEmptyTranslation = this.translateSrv.instant('CART_EMPTY');
+  cancelTransl = this.translateSrv.instant('CANCEL');
+
   constructor(
     private orderService: OrderService,
     private userService: UserService,
     private modalController: ModalController,
     private foodService: FoodService,
     private toastController: ToastController,
-    private emailService: EmailService
+    private emailService: EmailService,
+    private translateSrv: TranslateService
   ) {    
+    console.log(this.translateSrv.instant('INPROGRESS'));
   }
 
   ngOnInit(): void {
@@ -55,7 +66,6 @@ export class OrderPage implements OnInit {
     console.log(foodid);
     
     const sub = this.foodService.getFoodByIds(foodid).subscribe(async res => {
-      console.log('food ids tab', res);
       const modal = await this.modalController.create({
         component: ModalListComponent,
         componentProps: {
@@ -69,7 +79,8 @@ export class OrderPage implements OnInit {
   }
 
   protected getStatusLabel(status: number | undefined): string {
-    return this.statuses.find(s => s.value === status)?.label || 'Unknown';
+    const res = this.statuses.find(s => s.value === status)?.label || 'Unknown';
+    return this.translateSrv.instant(res);
   }
 
   protected updateStatus(order: Order): void {
@@ -97,7 +108,7 @@ export class OrderPage implements OnInit {
         sub.unsubscribe();
       },
       error: (err) => {
-        this.showToast('Status upate Error', 'warning');
+        this.showToast(this.translateSrv.instant('STATUS_UPDATE_ERROR'), 'warning');
         sub.unsubscribe();
       }
     });
@@ -115,7 +126,7 @@ export class OrderPage implements OnInit {
       },
       error: (error) => {
         console.error('Error sending email:', error);
-        this.showToast('An error occurred while sending the email.', 'warning');
+        this.showToast(this.translateSrv.instant('SEND_EMAIL_ERROR'), 'warning');
         sub.unsubscribe()
       },
     });

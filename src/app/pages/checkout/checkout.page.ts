@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ToastController } from '@ionic/angular';
+import { TranslateService } from '@ngx-translate/core';
 import { CartService } from 'src/app/services/cart.service';
 import { OrderService } from 'src/app/services/order.service';
 import { UserService } from 'src/app/services/user.service';
@@ -19,11 +20,17 @@ export class CheckoutPage implements OnInit {
   order: Order = new Order();
   checkoutForm!: FormGroup;
 
+  checkoutTransl = this.translateSrv.instant("CHECKOUT");
+  nameTransl = this.translateSrv.instant("NAME");
+  addressTransl = this.translateSrv.instant("ADDRESS_MAP");
+  chooseTransl = this.translateSrv.instant("CHOOSE_ON_MAP");
+
   constructor(
     private cartService: CartService,
     private userService: UserService,
     private toastController: ToastController,
     private orderService: OrderService,
+    private translateSrv: TranslateService
   ) {
   }
 
@@ -63,7 +70,7 @@ export class CheckoutPage implements OnInit {
         },
         
         onError: (err: any) => {
-          this.showToast('Payment Failed', 'warning');
+          this.showToast(this.translateSrv.instant("PAYMENT_FAILED"), 'warning');
           console.warn('paypal onError', err);
         },
 

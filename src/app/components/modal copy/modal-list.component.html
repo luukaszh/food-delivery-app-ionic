@@ -1,6 +1,6 @@
 <ion-header class="custom-header">
   <ion-toolbar>
-    <ion-title>Food List</ion-title>
+    <ion-title>{{foodListTransl | translate}}</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="closeModal()">
         <ion-icon name="close"></ion-icon>
@@ -17,8 +17,8 @@
       </ion-thumbnail>
       <ion-label>
         <h1>{{ food.name }}</h1>
-        <p>Cook time: {{ food.cooktime }} min</p>
-        <p>Price: {{ food.price | currency }}</p>
+        <p>{{cookTimeTransl | translate}}: {{ food.cooktime }} min</p>
+        <p>{{priceTransl | translate}}: {{ food.price | currency }}</p>
       </ion-label>
     </ion-item>
   </ion-list>

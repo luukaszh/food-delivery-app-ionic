@@ -8,6 +8,7 @@ import { CheckoutPageRoutingModule } from './checkout-routing.module';
 
 import { CheckoutPage } from './checkout.page';
 import { SharedModule } from 'src/app/components/shared.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { SharedModule } from 'src/app/components/shared.module';
     FormsModule,
     IonicModule,
     CheckoutPageRoutingModule,
-    SharedModule
+    SharedModule,
+    TranslateModule
   ],
   declarations: [CheckoutPage]
 })

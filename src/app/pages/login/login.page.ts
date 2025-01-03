@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -14,11 +15,17 @@ export class LoginPage implements OnInit {
   loginForm!: FormGroup; // Form group for login form
   isSubmit = false; // Flag to track form submission status
 
+  emailTransl = this.translateSrv.instant("EMAIL")
+  loginTransl = this.translateSrv.instant("HOME_MENU_LOGIN")
+  passwordTransl = this.translateSrv.instant("PASSWORD")
+
+
   constructor(
     private formBuilder: FormBuilder,
     private userService: UserService,
     private router: Router,
     private matSnack: MatSnackBar,
+    private translateSrv: TranslateService
   ) { }
 
   ngOnInit(): void {

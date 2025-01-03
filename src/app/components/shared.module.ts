@@ -8,12 +8,14 @@ import { ModalComponent } from './modal/modal.component';
 import { OrderItemsListComponent } from './order-items-list/order-items-list.component';
 import { MapComponent } from './map/map.component';
 import { ModalListComponent } from './modal copy/modal-list.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
     IonicModule,
     FormsModule,
-    CommonModule
+    CommonModule,
+    TranslateModule
   ],
   declarations: [
     SearchComponent,

@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>Cart</ion-title>
+    <ion-title>{{cartTransl | translate}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -15,7 +15,7 @@
         <img class="image-logo" src="/assets/epty-cart.webp">
       </div>
       <div class="empty-text-container">
-        <h1>Cart is empty</h1>
+        <h1>{{cartEmptyTransl | translate}}</h1>
       </div>
     </div>
   </ng-container>
@@ -30,7 +30,7 @@
           <h1 class="name">{{ cartItem.food.name }}</h1>
           <ion-item class="ion-item-select" lines="none">
             <ion-select class="ion-select" [(ngModel)]="cartItem.quantity"
-              (ionChange)="changeCartQuantity(cartItem, cartItem.quantity)">
+              (ionChange)="changeCartQuantity(cartItem, cartItem.quantity)" [cancelText]="cancelTransl | translate">
               <ion-select-option [value]="1">1</ion-select-option>
               <ion-select-option [value]="2">2</ion-select-option>
               <ion-select-option [value]="3">3</ion-select-option>
@@ -47,8 +47,8 @@
 
     <div class="checkout">
       <div class="checkout-clear-container">
-        <ion-button class="checkout-button" color="primary" routerLink="/checkout">Checkout</ion-button>
-        <ion-button class="clear-button" color="medium" (click)="clearCart()">Clear</ion-button>
+        <ion-button class="checkout-button" color="primary" routerLink="/checkout">{{checkoutTransl | translate}}</ion-button>
+        <ion-button class="clear-button" color="medium" (click)="clearCart()">{{clearTransl | translate}}</ion-button>
         <p class="total-price">Total: {{ cart.totalprice | currency }}</p>
       </div>
     </div>

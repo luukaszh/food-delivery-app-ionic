@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController, ToastController } from '@ionic/angular';
+import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { ModalComponent } from 'src/app/components/modal/modal.component';
 import { CartService } from 'src/app/services/cart.service';
@@ -21,7 +22,8 @@ export class HomePage implements OnInit {
     private foodService: FoodService,
     private modalController: ModalController,
     private cartService: CartService,
-    private toastController: ToastController
+    private toastController: ToastController,
+    private translateSrv: TranslateService
   ) {}
 
   ngOnInit(): void {

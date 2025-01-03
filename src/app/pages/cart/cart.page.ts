@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { CartService } from 'src/app/services/cart.service';
 import { Cart } from 'src/app/shared/models/cart';
@@ -14,7 +15,16 @@ export class CartPage implements OnInit {
   cartSubscription: Subscription | undefined; // Subscription for cart data
   cart!: Cart; // Cart object to store cart data
 
-  constructor(private cartService: CartService) { }
+  cartEmptyTransl = this.translateSrv.instant("CART_IS_EMPTY");
+  clearTransl = this.translateSrv.instant("CLEAR");
+  checkoutTransl = this.translateSrv.instant("CHECKOUT");
+  cartTransl = this.translateSrv.instant("CART");
+  cancelTransl = this.translateSrv.instant('CANCEL');
+
+  constructor(
+    private cartService: CartService,
+    private translateSrv: TranslateService
+  ) { }
 
   ngOnInit(): void {
     // Subscribe to get cart data updates

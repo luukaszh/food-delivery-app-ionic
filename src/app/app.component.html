@@ -6,16 +6,16 @@
           <ion-list-header>
             <img class="image-logo" src="/assets/logo.png">
           </ion-list-header>
-          <ion-note *ngIf="user.token">Welcome <span class="user-name">{{user.name}}</span></ion-note>
+          <ion-note *ngIf="user.token">{{ welcomeTitle | translate }} <span class="user-name">{{user.name}}</span></ion-note>
 
           <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
             <ion-item routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" routerLinkActive="selected">
               <ion-icon aria-hidden="true" slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
-              <ion-label>{{ p.title }}</ion-label>
+              <ion-label>{{ p.title | translate}}</ion-label>
             </ion-item>
             <ion-item *ngIf="user.isadmin" routerDirection="root" [routerLink]="['/admin']" lines="none" detail="false" routerLinkActive="selected">
               <ion-icon class="construct-icon" aria-hidden="true" slot="start" name="construct"></ion-icon>
-              <ion-label>Admin</ion-label>
+              <ion-label>{{adminMenuTitle | translate}}</ion-label>
             </ion-item>
             
             <ion-item lines="none" routerDirection="root" [routerLink]="['/cart']" detail="false" routerLinkActive="selected">
@@ -25,7 +25,7 @@
                   <div class="cart-count">{{cart.totalCount}}</div>
                 </div>
               </div>
-              <ion-label class="ion-label-cart">Cart</ion-label>
+              <ion-label class="ion-label-cart">{{cartMenuTitle | translate}}</ion-label>
             </ion-item>
 
             <ion-item routerDirection="root" [routerLink]="['/order']" detail="false" routerLinkActive="selected">
@@ -35,7 +35,7 @@
                   <div class="order-count">{{orderLen}}</div>
                 </div>
               </div>
-            <ion-label class="ion-label-order">Your Order</ion-label>
+            <ion-label class="ion-label-order">{{yourOrderMenuTitle | translate}}</ion-label>
           </ion-item>
 
             <ion-item lines="none">
@@ -50,18 +50,29 @@
 
         <ion-button *ngIf="!user.token" routerDirection="root" [routerLink]="['/login']" lines="none" fill="clear" class="menu-button" (click)="toggleMenu()">
           <ion-icon aria-hidden="true" slot="start" name="log-in"></ion-icon>
-          <ion-label>Login</ion-label>
+          <ion-label>{{loginMenuTitle | translate}}</ion-label>
         </ion-button>
 
         <ion-button *ngIf="!user.token" routerDirection="root" [routerLink]="['/register']" lines="none" fill="clear" class="menu-button" (click)="toggleMenu()">
           <ion-icon aria-hidden="true" slot="start" name="person-add"></ion-icon>
-          <ion-label>Register</ion-label>
+          <ion-label>{{registerMenuTitle | translate}}</ion-label>
         </ion-button>
 
         <ion-button *ngIf="user.token" routerDirection="root" [routerLink]="['/logout']" lines="none" fill="clear" class="menu-button" (click)="logout()">
           <ion-icon aria-hidden="true" slot="start" name="log-out"></ion-icon>
-          <ion-label>Logout</ion-label>
+          <ion-label>{{logoutMenuTitle | translate}}</ion-label>
         </ion-button>
+
+        <ion-item class="language-select">
+          <ion-label>{{ selectLangMenuTitle | translate }}</ion-label>
+          <ion-select 
+            [(ngModel)]="currentLang" 
+            (ionChange)="setLanguage($event.detail.value)" 
+            [cancelText]="cancelTransl | translate">
+            <ion-select-option value="en">English</ion-select-option>
+            <ion-select-option value="pl">Polski</ion-select-option>
+          </ion-select>
+        </ion-item>
 
       </ion-content>
     </ion-menu>

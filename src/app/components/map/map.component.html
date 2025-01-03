@@ -1,7 +1,7 @@
 
 <div class="container">
   <button *ngIf="!readonly" class="find-location" (click)="findMyLocation()">
-    Find Location
+    {{findLocTransl | translate}}
   </button>
   <div #map class="map"></div>
 </div>

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { FoodService } from 'src/app/services/food.service';
 import { FoodDelete } from 'src/app/shared/interfaces/foodDelete';
@@ -22,25 +23,32 @@ export class AdminPage implements OnInit {
 
   // Array defining form fields for adding food
   formFields: any[] = [
-    { name: 'name', label: 'Name', type: 'text', placeholder: 'Name' },
-    { name: 'price', label: 'Price', type: 'number', placeholder: 'Price' },
-    { name: 'cooktime', label: 'Cook time [min]', type: 'text', placeholder: 'Cook time [min]' },
-    { name: 'imageurl', label: 'Image url', type: 'text', placeholder: 'Image url' },
-    { name: 'description', label: 'Description', type: 'text', placeholder: 'Description' }
+    { name: 'name', label: this.translateSrv.instant('NAME'), type: 'text', placeholder: this.translateSrv.instant('NAME') },
+    { name: 'price', label: this.translateSrv.instant('PRICE'), type: 'number', placeholder: this.translateSrv.instant('PRICE') },
+    { name: 'cooktime', label: this.translateSrv.instant('COOK_TIME'), type: 'text', placeholder: this.translateSrv.instant('COOK_TIME') },
+    { name: 'imageurl', label: this.translateSrv.instant('IMAGE_URL'), type: 'text', placeholder: this.translateSrv.instant('IMAGE_URL') },
+    { name: 'description', label: this.translateSrv.instant('DESCRIPTION'), type: 'text', placeholder: this.translateSrv.instant('DESCRIPTION') }
   ];
 
   // Form fields for editing food
   editFormFields: { name: keyof Food; label: string; type: string; placeholder: string }[] = [
-    { name: 'name', label: 'Name', type: 'text', placeholder: 'Name' },
-    { name: 'price', label: 'Price', type: 'text', placeholder: 'Price' },
-    { name: 'cooktime', label: 'Cook time [min]', type: 'text', placeholder: 'Cook time [min]' },
-    { name: 'imageurl', label: 'Image url', type: 'text', placeholder: 'Image url' },
-    { name: 'description', label: 'Description', type: 'text', placeholder: 'Description' }
+    { name: 'name', label: this.translateSrv.instant('NAME'), type: 'text', placeholder: this.translateSrv.instant('NAME') },
+    { name: 'price', label: this.translateSrv.instant('PRICE'), type: 'text', placeholder: this.translateSrv.instant('PRICE') },
+    { name: 'cooktime', label: this.translateSrv.instant('COOK_TIME'), type: 'text', placeholder: this.translateSrv.instant('COOK_TIME') },
+    { name: 'imageurl', label: this.translateSrv.instant('IMAGE_URL'), type: 'text', placeholder: this.translateSrv.instant('IMAGE_URL') },
+    { name: 'description', label: this.translateSrv.instant('DESCRIPTION'), type: 'text', placeholder: this.translateSrv.instant('DESCRIPTION') }
   ];
+
+  addTransl = this.translateSrv.instant('ADD');
+  deleteTransl = this.translateSrv.instant('DELETE');
+  editTransl = this.translateSrv.instant('EDIT');
+  adminTransl = this.translateSrv.instant('ADMIN_PAGE');
+  cancelTransl = this.translateSrv.instant('CANCEL');
 
   constructor(
     private foodService: FoodService,
     private formBuilder: FormBuilder,
+    private translateSrv: TranslateService
   ) { }
 
   ngOnInit(): void {

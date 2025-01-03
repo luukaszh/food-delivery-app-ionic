@@ -26,13 +26,13 @@
   <div class="foot-container">
     <div class="cook-time">
       <!-- <ion-icon class="time-icon" name="timer" style="font-size: 1.4rem"></ion-icon> -->
-      <p class="cook-time-p">Time: {{foodData.cooktime}}min</p>
+      <p class="cook-time-p">{{timeTransl | translate}}: {{foodData.cooktime}}min</p>
     </div>
     <div class="add-button-container">
-      <ion-button class="add-button" color="primary" (click)="addToCart()">Add To Cart</ion-button>
+      <ion-button class="add-button" color="primary" (click)="addToCart()">{{addToCartTransl | translate}}</ion-button>
     </div>
     <div class="price">
-      <p class="price-p">Price: {{foodData.price | currency}}</p>
+      <p class="price-p">{{priceTransl | translate}}: {{foodData.price | currency}}</p>
     </div>
   </div>
 </ion-footer>

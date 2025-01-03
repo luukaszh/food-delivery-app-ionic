@@ -26,9 +26,9 @@ export class OrderAdd {
 }
 
 export const ORDER_STATUSES = [
-  { label: 'Unknown', value: 0 },
-  { label: 'Accepted', value: 1 },
-  { label: 'In progress', value: 2 },
-  { label: 'Sent', value: 3 },
-  { label: 'Delivered', value: 4 }
+  { label: 'UNKNOWN', value: 0 },
+  { label: 'ACCEPTED', value: 1 },
+  { label: 'INPROGRESS', value: 2 },
+  { label: 'SENT', value: 3 },
+  { label: 'DELIVERED', value: 4 }
 ];
