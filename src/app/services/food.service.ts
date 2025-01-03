@@ -5,13 +5,12 @@ import { Food } from "../shared/models/food";
 import { FoodAdd } from "../shared/interfaces/FoodAdd";
 import { FoodDelete } from "../shared/interfaces/foodDelete";
 import { ToastController } from '@ionic/angular';
+import { baseURL } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FoodService {
-
-  baseURL = 'http://localhost:3300';
 
   // Subject to handle food data
   private foodSubject = new BehaviorSubject<Food[]>([]);
@@ -26,12 +25,12 @@ export class FoodService {
 
   // Method to get all food items
   public getAll(): Observable<Food[]> {
-    return this.httpClient.get<Food[]>(`${this.baseURL}/food`);
+    return this.httpClient.get<Food[]>(`${baseURL}/food`);
   }
 
   // Method to add a new food item
   public addFood(foodAdd: FoodAdd): Observable<Food> {
-    return this.httpClient.post<Food>(`${this.baseURL}/food/add`, foodAdd).pipe(
+    return this.httpClient.post<Food>(`${baseURL}/food/add`, foodAdd).pipe(
       tap({
         next: async (food) => {
           this.updateFoodList();
@@ -48,7 +47,7 @@ export class FoodService {
 
   // Method to delete a food item
   public deleteFood(foodDelete: FoodDelete): Subscription {
-    return this.httpClient.delete<Food>(`${this.baseURL}/food/${foodDelete}`).subscribe({
+    return this.httpClient.delete<Food>(`${baseURL}/food/${foodDelete}`).subscribe({
       next: async () => {
         this.updateFoodList();
         // Show toast message for successful removal
@@ -63,7 +62,7 @@ export class FoodService {
 
   // Method to update a food item
   public updateFood(foodEdit: Food): Observable<Food> {
-    return this.httpClient.put<Food>(`${this.baseURL}/food/${foodEdit.id}`, foodEdit).pipe(
+    return this.httpClient.put<Food>(`${baseURL}/food/${foodEdit.id}`, foodEdit).pipe(
       tap({
         next: async () => {
           this.updateFoodList();
@@ -82,7 +81,7 @@ export class FoodService {
   getFoodByIds(ids: number[]): Observable<Food[]> {
     const params = new HttpParams().set('ids', ids.join(',')); // Tworzenie parametrów zapytania
 
-    return this.httpClient.get<Food[]>(`${this.baseURL}/foodids`, { params });
+    return this.httpClient.get<Food[]>(`${baseURL}/foodids`, { params });
   }
 
   // Method to update the food list after any CRUD operation

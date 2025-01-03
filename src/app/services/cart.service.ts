@@ -7,6 +7,7 @@ import { Order } from "../shared/models/order";
 import { HttpClient } from "@angular/common/http";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Router } from "@angular/router";
+import { baseURL } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -18,8 +19,6 @@ export class CartService {
 
   // Subject to handle cart changes
   private cartSubject: BehaviorSubject<Cart> = new BehaviorSubject(this.cart);
-
-  baseURL = 'http://localhost:3300'
 
   constructor(
     private httpClient: HttpClient,
@@ -100,7 +99,7 @@ export class CartService {
 
   // Method to post order
   postOrder(order: Order): Subscription {
-    return this.httpClient.post<Order>(this.baseURL + '/orders', order)
+    return this.httpClient.post<Order>(baseURL + '/orders', order)
       .subscribe({
         next: (order) => {
           // Show snack bar message for successful order

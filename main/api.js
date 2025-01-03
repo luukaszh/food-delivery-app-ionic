@@ -4,7 +4,7 @@ const app = express();
 const cors = require(`cors`);
 const bodyParser = require('body-parser');
 const jwt = require("jsonwebtoken");
-const sendEmail = require('./mailer');
+const sendEmail = require('./nodemailer');
 
 
 app.use(cors());
@@ -183,6 +183,24 @@ app.post('/users/register', (req, res) => {
   });
 });
 
+app.get('/users/:id', (req, res) => {
+  const userId = req.params.id;
+
+  client.query(`SELECT * FROM users WHERE id = $1`, [userId], (err, result) => {
+    if (err) {
+      console.error('Error querying user:', err);
+      return res.status(500).json({ message: 'Internal Server Error' });
+    }
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const user = result.rows[0];
+    console.log('Fetched user:', user);
+    res.status(200).json(user);
+  });
+});
 
 app.get('/examplefood', (req, res) => {
   jwt.verify(token.token, 'secretKey', (err, authData) => {
@@ -412,7 +430,7 @@ app.put('/orders/:id', (req, res) => {
   });
 });
 
-app.post('/send-email', (req, res) => {
+app.post('/send-email', async (req, res) => {
   const { email, subject, text } = req.body;
 
   // Walidacja danych wejściowych
@@ -420,32 +438,13 @@ app.post('/send-email', (req, res) => {
     return res.status(400).json({ message: 'Missing required fields: email, subject, or text' });
   }
 
-  // Konfiguracja transportera
-  const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: 'your-email@gmail.com', // Twoje dane logowania
-      pass: 'your-app-password',    // Hasło aplikacji lub inna metoda autoryzacji
-    },
-  });
-
-  const mailOptions = {
-    from: 'your-email@gmail.com',  // Twój e-mail nadawcy
-    to: email,                     // Adres odbiorcy (dynamicznie z req.body)
-    subject: subject,              // Temat wiadomości
-    text: text,                    // Treść wiadomości
-  };
-
-  // Wysyłanie wiadomości e-mail
-  transporter.sendMail(mailOptions, (err, info) => {
-    if (err) {
-      console.error('Error sending email:', err);
-      return res.status(500).json({ message: 'Failed to send email', error: err.message });
-    }
-
-    console.log('Email sent:', info.response);
-    res.status(200).json({ message: 'Email sent successfully' });
-  });
+  try {
+    // Wysyłanie e-maila
+    const result = await sendEmail(email, subject, text);
+    res.status(200).json({ message: 'Email sent successfully', result });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 });
 
 const generateToken = (user) => {

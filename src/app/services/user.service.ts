@@ -6,6 +6,7 @@ import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
 import { UserRegister } from "../shared/interfaces/UserRegister";
 import { ToastController } from '@ionic/angular';
+import { baseURL } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +16,6 @@ export class UserService {
   private userSubject = new BehaviorSubject<User>(this.getUserFromLocalStorage());
 
   public userObservable: Observable<User>
-
-  baseURL = 'http://localhost:3300'
 
   constructor(
     private httpClient: HttpClient,
@@ -31,9 +30,13 @@ export class UserService {
     return this.userSubject.value;
   }
 
+  public getUserById(id: number): Observable<any> {
+    return this.httpClient.get(`${baseURL}/users/${id}`);
+  }
+
   // Method for user login
   public login(userLogin: UserLogin): Observable<User> {
-    return this.httpClient.post<User>(this.baseURL + '/users/login', userLogin).pipe(
+    return this.httpClient.post<User>(baseURL + '/users/login', userLogin).pipe(
       tap({
         next: async (user) => {
           this.setUserToLocalStorage(user);
@@ -52,7 +55,7 @@ export class UserService {
 
   // Method for user registration
   public register(userRegister: UserRegister): Subscription {
-    return this.httpClient.post<User>(this.baseURL + '/users/register', userRegister)
+    return this.httpClient.post<User>(baseURL + '/users/register', userRegister)
       .subscribe({
         next: async (user) => {
           this.userSubject.next(user);

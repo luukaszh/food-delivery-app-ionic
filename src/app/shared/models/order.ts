@@ -12,6 +12,7 @@ export class Order {
   createdAt?: string;
   status?: number;
   foodid?: number[];
+  userid?: string;
 }
 
 export class OrderAdd {
