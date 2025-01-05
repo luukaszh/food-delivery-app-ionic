@@ -35,15 +35,14 @@ app.get('/food', (req, res) => {
 })
 
 app.get('/foodids', (req, res) => {
-  const ids = req.query.ids; // Oczekuje tablicy ID w parametrze zapytania
+  const ids = req.query.ids;
 
   if (!ids) {
     return res.status(400).send('Food IDs are required.');
   }
 
-  const idsArray = Array.isArray(ids) ? ids : ids.split(','); // Obsługa przypadku, gdy ids to string
+  const idsArray = Array.isArray(ids) ? ids : ids.split(',');
 
-  // Przygotowanie zapytania z użyciem parametrów
   const query = 'SELECT * FROM food WHERE id = ANY($1::int[])';
 
   client.query(query, [idsArray], (err, result) => {
@@ -138,23 +137,20 @@ app.post('/users/login', (req, res) => {
 app.post('/users/register', (req, res) => {
   const { name, email, password, isadmin } = req.body;
 
-  // First, retrieve all existing user IDs
   client.query(`SELECT id FROM users ORDER BY id`, (err, result) => {
     if (err) {
       console.error('Error querying user IDs:', err);
       return res.status(500).json({ message: 'Internal Server Error' });
     }
 
-    // Generate the next available ID
     const existingIds = result.rows.map(row => +row.id);
     let nextId = 1;
     while (existingIds.includes(nextId)) {
       nextId++;
     }
 
-    console.log('Generated next user ID:', nextId); // Debugging line to confirm nextId
+    console.log('Generated next user ID:', nextId);
 
-    // Check if the user already exists by email
     client.query(`SELECT * FROM users WHERE email = $1`, [email], (err, result) => {
       if (err) {
         console.error('Error querying users:', err);
@@ -166,7 +162,6 @@ app.post('/users/register', (req, res) => {
         return res.status(409).json({ message: 'User already exists' });
       }
 
-      // Insert new user with generated ID
       const insertQuery = `INSERT INTO users (id, name, email, password, isadmin) VALUES ($1, $2, $3, $4, $5)`;
       const values = [nextId, name, email, password, isadmin || false];
 
@@ -222,21 +217,18 @@ app.get('/examplefood', (req, res) => {
 app.post('/users/register', (req, res) => {
   const { name, email, password, isadmin } = req.body;
 
-  // Query to get all existing IDs in the users table
   client.query(`SELECT id FROM users ORDER BY id`, (err, result) => {
     if (err) {
       console.error('Error querying user IDs:', err);
       return res.status(500).json({ message: 'Internal Server Error' });
     }
 
-    // Generate the next available ID
     const existingIds = result.rows.map(row => +row.id);
     let nextId = 1;
     while (existingIds.includes(nextId)) {
       nextId++;
     }
 
-    // Check if the user already exists by email
     client.query(`SELECT * FROM users WHERE email = $1`, [email], (err, result) => {
       if (err) {
         console.error('Error querying users:', err);
@@ -250,7 +242,6 @@ app.post('/users/register', (req, res) => {
       }
       
       
-      // Insert new user with generated ID
       const insertQuery = `INSERT INTO users (name, email, password, isadmin, id) VALUES ($1, $2, $3, $4, $5)`;
       const values = [name, email, password, isadmin || false, nextId];
 
@@ -288,7 +279,6 @@ app.post('/orders', (req, res) => {
 
       const order = req.body;
 
-      // Extract only the 'id' values from each item in req.body.items
       const foodIds = order.items.map(item => parseInt(item.food.id, 10));
 
       const insertQuery = `INSERT INTO orders(id, name, totalprice, address, userid, foodid, status)
@@ -318,7 +308,6 @@ app.post('/orders', (req, res) => {
 
 
 app.get('/orders', (req, res) => {
-  // Pobranie tokena z nagłówka autoryzacji
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
 
@@ -326,52 +315,43 @@ app.get('/orders', (req, res) => {
     return res.status(401).json({ message: 'Token not provided' });
   }
 
-  // Weryfikacja tokena JWT
   jwt.verify(token, 'secretKey', (err, authData) => {
     if (err) {
       return res.status(403).json({ message: 'Invalid token' });
     }
 
-    const { userid } = req.query; // Zakładam, że userid będzie przesyłane jako query param
+    const { userid } = req.query;
 
-    // Jeżeli brak userid, zwróć błąd
     if (!userid) {
       return res.status(400).json({ message: 'userid is required' });
     }
 
-    // Zapytanie SQL
     let query;
     const values = [];
     if (parseInt(userid, 10) === 1) {
-      // Admin - pobiera wszystkie zamówienia
       query = 'SELECT * FROM orders ORDER BY id';
     } else {
-      // Zwykły użytkownik - pobiera zamówienia tylko dla swojego userid
       query = 'SELECT * FROM orders WHERE userid = $1 ORDER BY id';
       values.push(userid);
     }
 
-    // Wykonanie zapytania do bazy danych
     client.query(query, values, (err, result) => {
       if (err) {
         console.log('Error:', err);
         return res.status(500).json({ error: 'Failed to fetch orders: ' + err.message });
       }
 
-      // Mapowanie tylko statusu na liczbę
       const mappedResults = result.rows.map(order => ({
         ...order,
-        status: parseInt(order.status, 10), // Konwersja statusu na liczbę całkowitą
+        status: parseInt(order.status, 10),
       }));
       
-      // Zwrócenie wyników
       res.status(200).json(mappedResults);
     });
   });
 });
 
 app.put('/orders/:id', (req, res) => {
-  // Pobranie tokena z nagłówka autoryzacji
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
 
@@ -379,16 +359,14 @@ app.put('/orders/:id', (req, res) => {
     return res.status(401).json({ message: 'Token not provided' });
   }
 
-  // Weryfikacja tokena JWT
   jwt.verify(token, 'secretKey', (err, authData) => {
     if (err) {
       return res.status(403).json({ message: 'Invalid token' });
     }
 
-    const orderId = req.params.id; // Pobranie ID zamówienia z URL
-    const order = req.body; // Zamówienie do zaktualizowania z ciała żądania
+    const orderId = req.params.id;
+    const order = req.body;
 
-    // Zapytanie SQL do aktualizacji zamówienia
     const updateQuery = `
       UPDATE orders
       SET 
@@ -408,23 +386,20 @@ app.put('/orders/:id', (req, res) => {
       order.address,
       order.userid,
       order.status,
-      order.foodid, // Zakładam, że foodid jest tablicą
+      order.foodid,
       orderId
     ];
 
-    // Wykonanie zapytania do bazy danych
     client.query(updateQuery, values, (err, result) => {
       if (err) {
         console.log('Error:', err);
         return res.status(500).json({ error: 'Failed to update order: ' + err.message });
       }
 
-      // Jeżeli nie znaleziono zamówienia
       if (result.rows.length === 0) {
         return res.status(404).json({ message: 'Order not found' });
       }
 
-      // Zwrócenie zaktualizowanego zamówienia
       res.status(200).json({ message: 'Order updated successfully', order: result.rows[0] });
     });
   });
@@ -433,17 +408,69 @@ app.put('/orders/:id', (req, res) => {
 app.post('/send-email', async (req, res) => {
   const { email, subject, text } = req.body;
 
-  // Walidacja danych wejściowych
   if (!email || !subject || !text) {
     return res.status(400).json({ message: 'Missing required fields: email, subject, or text' });
   }
 
   try {
-    // Wysyłanie e-maila
     const result = await sendEmail(email, subject, text);
     res.status(200).json({ message: 'Email sent successfully', result });
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+});
+
+app.post('/food/:id/rate', verifyToken, async (req, res) => {
+  const { id } = req.params;
+  const { rating } = req.body;
+
+  if (!rating || rating < 1 || rating > 5) {
+    return res.status(400).json({ message: "Rating must be a number between 1 and 5." });
+  }
+
+  try {
+    const insertQuery = `
+      INSERT INTO food_ratings (food_id, user_id, rating)
+      VALUES ($1, $2, $3)
+    `;
+    await client.query(insertQuery, [id, req.user.id, rating]);
+
+    const avgQuery = `
+      SELECT AVG(rating) as average_rating
+      FROM food_ratings
+      WHERE food_id = $1
+    `;
+    const avgResult = await client.query(avgQuery, [id]);
+    const averageRating = parseFloat(avgResult.rows[0].average_rating).toFixed(2);
+
+    const updateQuery = `
+      UPDATE food
+      SET average_rating = $1
+      WHERE id = $2
+    `;
+    await client.query(updateQuery, [averageRating, id]);
+
+    res.status(200).json({ message: "Rating added successfully", averageRating });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: "Failed to add rating" });
+  }
+});
+
+app.get('/food/:id/ratings', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const query = `
+      SELECT *
+      FROM food_ratings
+      WHERE food_id = $1
+    `;
+    const result = await client.query(query, [id]);
+    res.status(200).json(result.rows);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: "Failed to fetch ratings" });
   }
 });
 
