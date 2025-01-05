@@ -21,7 +21,6 @@ ion-thumbnail {
   
   .checkout-button {
     padding: 0 15px;
-    /* Shorter notation for padding */
   }
   
   .total-price {
@@ -37,7 +36,6 @@ ion-thumbnail {
     cursor: pointer;
   }
   
-  /* Adjusting ion-select styles */
   .ion-item-select {
     display: inline-block;
   }
@@ -88,11 +86,11 @@ ion-thumbnail {
 
   .order-items {
     cursor: pointer;
-    transition: opacity 0.3s ease; /* Dodajemy efekt płynnej zmiany */
+    transition: opacity 0.3s ease;
   }
   
   .order-items:hover {
-    opacity: 0.5; /* Wyszarzenie elementu przy najechaniu */
+    opacity: 0.8;
   }
 
   ion-col {
@@ -105,16 +103,16 @@ ion-thumbnail {
     font-size: 18px;
     padding: 8px 16px;
     margin-top: 30px;
-    white-space: normal; /* Pozwól na zawijanie tekstu w przypadku potrzeby */
-    word-wrap: break-word; /* Pozwól na zawijanie długich słów */
+    white-space: normal;
+    word-wrap: break-word;
     display: inline-block;
-    max-width: 100%; /* Zapewnia responsywność */
+    max-width: 100%;
     width: 100%;
   }
   
-  @media (max-width: 768px) { /* Dostosowanie dla mniejszych ekranów */
+  @media (max-width: 768px) { 
     .custom-badge {
-      font-size: 14px;  /* Zmniejsz rozmiar czcionki dla mniejszych ekranów */
-      padding: 6px 12px; /* Zmniejsz padding dla mniejszych ekranów */
+      font-size: 14px;
+      padding: 6px 12px;
     }
   }

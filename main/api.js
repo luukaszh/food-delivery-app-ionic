@@ -474,6 +474,19 @@ app.get('/food/:id/ratings', async (req, res) => {
   }
 });
 
+function verifyToken(req, res, next) {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+
+  if (!token) return res.status(401).json({ message: "No token provided" });
+
+  jwt.verify(token, JWT_SECRET, (err, user) => {
+    if (err) return res.status(403).json({ message: "Invalid token" });
+    req.user = user; // Attach user data to the request
+    next();
+  });
+}
+
 const generateToken = (user) => {
   const token = jwt.sign({
     email: user.email, isadmin: user.isadmin
