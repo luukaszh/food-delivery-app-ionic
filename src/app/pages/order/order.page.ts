@@ -6,6 +6,7 @@ import { ModalComponent } from 'src/app/components/modal/modal.component';
 import { EmailService } from 'src/app/services/email.service';
 import { FoodService } from 'src/app/services/food.service';
 import { OrderService } from 'src/app/services/order.service';
+import { ToastColor, ToastService } from 'src/app/services/toast.service';
 import { UserService } from 'src/app/services/user.service';
 import { Food } from 'src/app/shared/models/food';
 import { Order, ORDER_STATUSES } from 'src/app/shared/models/order';
@@ -37,9 +38,9 @@ export class OrderPage implements OnInit {
     private userService: UserService,
     private modalController: ModalController,
     private foodService: FoodService,
-    private toastController: ToastController,
     private emailService: EmailService,
-    private translateSrv: TranslateService
+    private translateSrv: TranslateService,
+    private toastSrv: ToastService
   ) {    
     console.log(this.translateSrv.instant('INPROGRESS'));
   }
@@ -108,7 +109,7 @@ export class OrderPage implements OnInit {
         sub.unsubscribe();
       },
       error: (err) => {
-        this.showToast(this.translateSrv.instant('STATUS_UPDATE_ERROR'), 'warning');
+        this.toastSrv.showToast(this.translateSrv.instant('STATUS_UPDATE_ERROR'), ToastColor.Warning);
         sub.unsubscribe();
       }
     });
@@ -126,7 +127,7 @@ export class OrderPage implements OnInit {
       },
       error: (error) => {
         console.error('Error sending email:', error);
-        this.showToast(this.translateSrv.instant('SEND_EMAIL_ERROR'), 'warning');
+        this.toastSrv.showToast(this.translateSrv.instant('SEND_EMAIL_ERROR'), ToastColor.Warning);
         sub.unsubscribe()
       },
     });
@@ -135,18 +136,5 @@ export class OrderPage implements OnInit {
   private generateEmailText(status: number | undefined, orderId: number): string {
     const statusLabel = ORDER_STATUSES.find(s => s.value === status)?.label || 'Unknown';
     return `Your order with ID ${orderId} has been updated to the status: ${statusLabel}. Thank you for choosing us!`;
-  }
-
-  async showToast(message: string, color: string) {
-    // Show a toast notification with the food item's name indicating it has been added to the cart
-    await this.toastController.create({
-      message: message,
-      duration: 4000,
-      position: 'bottom',
-      color,
-      buttons: [{
-        text: 'OK',
-      }]
-    }).then(res => res.present());
   }
 }

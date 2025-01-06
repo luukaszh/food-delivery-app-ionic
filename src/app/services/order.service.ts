@@ -4,6 +4,7 @@ import { Observable, Subscription } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ToastController } from '@ionic/angular';
 import { baseURL } from 'src/environments/environment';
+import { ToastColor, ToastService } from './toast.service';
 
 @Injectable({
   providedIn: 'root' 
@@ -15,7 +16,7 @@ export class OrderService {
 
   constructor(
     private httpClient: HttpClient,
-    private toastController: ToastController
+    private toastSrv: ToastService
   ) { }
 
   public postOrder(order: OrderAdd): Subscription{
@@ -24,10 +25,10 @@ export class OrderService {
     return this.httpClient.post<OrderAdd>(baseURL + '/orders', order)
       .subscribe({
         next: (order) =>{
-          this.presentToast(`Order created successfully!`);
+          this.toastSrv.showToast(`Order created successfully!`, ToastColor.Primary);
         },
         error: (error) => {
-          this.presentToast(`Order create failed!`);
+          this.toastSrv.showToast(`Order create failed!`, ToastColor.Primary);
         }
       })
   }
@@ -38,15 +39,6 @@ export class OrderService {
   
     return this.httpClient.get<Order[]>(url, { params });
   }  
-
-  private async presentToast(message: string): Promise<void> {
-    const toast = await this.toastController.create({
-      message: message,
-      duration: 2000,
-      position: 'bottom'
-    });
-    toast.present();
-  }
 
   public updateOrder(order: Order): Observable<any> {
     return this.httpClient.put(`${baseURL}/orders/${order.id}`, order);

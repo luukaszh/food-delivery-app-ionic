@@ -5,4 +5,5 @@ export class Food {
   imageurl!: string;
   cooktime!: string;
   description!: string;
+  foodratings!: number[];
 }

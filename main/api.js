@@ -420,7 +420,7 @@ app.post('/send-email', async (req, res) => {
   }
 });
 
-app.post('/food/:id/rate', verifyToken, async (req, res) => {
+app.post('/food/:id/rate', async (req, res) => {
   const { id } = req.params;
   const { rating } = req.body;
 
@@ -429,48 +429,35 @@ app.post('/food/:id/rate', verifyToken, async (req, res) => {
   }
 
   try {
-    const insertQuery = `
-      INSERT INTO food_ratings (food_id, user_id, rating)
-      VALUES ($1, $2, $3)
+    // Pobierz aktualne oceny
+    const selectQuery = `
+      SELECT foodratings
+      FROM food
+      WHERE id = $1
     `;
-    await client.query(insertQuery, [id, req.user.id, rating]);
+    const result = await client.query(selectQuery, [id]);
 
-    const avgQuery = `
-      SELECT AVG(rating) as average_rating
-      FROM food_ratings
-      WHERE food_id = $1
-    `;
-    const avgResult = await client.query(avgQuery, [id]);
-    const averageRating = parseFloat(avgResult.rows[0].average_rating).toFixed(2);
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: "Food not found" });
+    }
 
-    const updateQuery = `
+    const currentRatings = result.rows[0].foodratings || [];
+
+    // Dodaj nową ocenę do tablicy
+    const updatedRatings = [...currentRatings, rating];
+
+    // Zaktualizuj kolumnę foodratings
+    const updateRatingsQuery = `
       UPDATE food
-      SET average_rating = $1
+      SET foodratings = $1
       WHERE id = $2
     `;
-    await client.query(updateQuery, [averageRating, id]);
+    await client.query(updateRatingsQuery, [updatedRatings, id]);
 
-    res.status(200).json({ message: "Rating added successfully", averageRating });
+    res.status(200).json({ message: "Rating added successfully" });
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ error: "Failed to add rating" });
-  }
-});
-
-app.get('/food/:id/ratings', async (req, res) => {
-  const { id } = req.params;
-
-  try {
-    const query = `
-      SELECT *
-      FROM food_ratings
-      WHERE food_id = $1
-    `;
-    const result = await client.query(query, [id]);
-    res.status(200).json(result.rows);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).json({ error: "Failed to fetch ratings" });
   }
 });
 

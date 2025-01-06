@@ -98,3 +98,13 @@
         flex-basis: 100%;
     }
 }
+
+.rating-container {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+  }
+
+.rating-count {
+    margin-top: 3px;
+}

@@ -78,10 +78,20 @@ export class FoodService {
   }
 
   // Method to get a food item by its ID
-  getFoodByIds(ids: number[]): Observable<Food[]> {
+  public getFoodByIds(ids: number[]): Observable<Food[]> {
     const params = new HttpParams().set('ids', ids.join(',')); // Tworzenie parametrów zapytania
 
     return this.httpClient.get<Food[]>(`${baseURL}/foodids`, { params });
+  }
+
+  // Metoda do wysyłania oceny
+  public sendRating(foodId: number, rating: number): Observable<any> {
+    return this.httpClient.post(`${baseURL}/food/${foodId}/rate`, { rating });
+  }
+
+  // Metoda do pobierania średniej oceny
+  public getAverageRating(foodId: number): Observable<any> {
+    return this.httpClient.get(`${baseURL}/food/${foodId}/average-rating`);
   }
 
   // Method to update the food list after any CRUD operation

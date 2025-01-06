@@ -18,7 +18,18 @@
         <div class="food-link">
           <img [src]="food.imageurl" class="food-image" />
           <ion-label class="content">
-            <h2 class="name">{{food.name}}</h2>
+            <h2 class="name">{{food.name}}</h2> 
+
+            <div class="rating-container">
+              <igc-rating 
+                [value]="calculateAverageRating(food.foodratings)" 
+                min="1" max="5" 
+                (igcChange)="submitRating($event, food.id);" 
+                (click)="$event.stopPropagation()"
+              ></igc-rating>       
+              <h1 class="rating-count">: {{food.foodratings.length}}</h1>
+            </div>
+
             <div class="product-item-footer">
               <div class="price">
                 {{food.price | currency}}

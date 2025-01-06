@@ -4,6 +4,7 @@ import { ToastController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { CartService } from 'src/app/services/cart.service';
 import { OrderService } from 'src/app/services/order.service';
+import { ToastColor, ToastService } from 'src/app/services/toast.service';
 import { UserService } from 'src/app/services/user.service';
 import { Order, OrderAdd } from 'src/app/shared/models/order';
 
@@ -30,7 +31,8 @@ export class CheckoutPage implements OnInit {
     private userService: UserService,
     private toastController: ToastController,
     private orderService: OrderService,
-    private translateSrv: TranslateService
+    private translateSrv: TranslateService,
+    private toastSrv: ToastService
   ) {
   }
 
@@ -70,7 +72,7 @@ export class CheckoutPage implements OnInit {
         },
         
         onError: (err: any) => {
-          this.showToast(this.translateSrv.instant("PAYMENT_FAILED"), 'warning');
+          this.toastSrv.showToast(this.translateSrv.instant("PAYMENT_FAILED"), ToastColor.Warning);
           console.warn('paypal onError', err);
         },
 
@@ -92,18 +94,5 @@ export class CheckoutPage implements OnInit {
     this.order.totalprice = cart.totalprice;
 
     this.order.name = name;
-  }
-
-  async showToast(message: string, color: string) {
-    // Show a toast notification with the food item's name indicating it has been added to the cart
-    await this.toastController.create({
-      message: message,
-      duration: 4000,
-      position: 'bottom',
-      color,
-      buttons: [{
-        text: 'OK',
-      }]
-    }).then(res => res.present());
   }
 }
