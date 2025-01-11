@@ -2,9 +2,8 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    max-height: 80vh;
+    flex-grow: 1; /* Zajmowanie dostępnej przestrzeni */
     overflow-y: auto;
-    grid-auto-flow: dense;
 }
 
 .food-list::-webkit-scrollbar {
@@ -108,3 +107,35 @@
 .rating-count {
     margin-top: 3px;
 }
+
+.search-sort-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;  /* Wyśrodkowanie w poziomie */
+    gap: 1rem; /* Odstęp między elementami */
+    padding: 0 1rem;
+    width: 100%;
+}
+
+.custom-searchbar {
+    flex-grow: 1;
+    flex-shrink: 1; 
+    min-width: 0;
+}
+
+.custom-sort-select {
+    flex-shrink: 0;
+    max-width: 100px;
+    --background: #f87f54;
+    --border-radius: 5rem;
+    --padding-start: 0.8rem;
+    --padding-end: 0.8rem;
+    font-size: 0.9rem;
+    --highlight-color-valid: none;
+    color: rgb(224, 224, 224)
+}
+
+.custom-sort-select:hover {
+    transform: scale(1.01);
+  }
+  

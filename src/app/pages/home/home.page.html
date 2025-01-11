@@ -8,9 +8,24 @@
 </ion-header>
 
 <ion-content>
+  
+  <div class="search-sort-container">
+    <app-search (searchTextChanged)="onSearch($event)"></app-search>
 
-  <app-search (searchTextChanged)="onSearch($event)"></app-search>
-
+  
+    <ion-select
+      placeholder="Select category"
+      [(ngModel)]="selectedCategory"
+      (ionChange)="onCategoryChange($event)"
+      class="custom-sort-select">
+      <ion-select-option
+        *ngFor="let category of categories"
+        [value]="category.value">
+        {{ category.key }}
+      </ion-select-option>
+    </ion-select>
+  </div>
+    
   <ion-list class="food-list">
     <ng-container *ngFor="let food of foods">
       <ion-item class="food-item" lines="none" (click)="presentModal(food)"

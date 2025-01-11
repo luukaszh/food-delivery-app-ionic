@@ -226,3 +226,10 @@ ion-item {
 .ion-label-order {
   padding-left: 17px;
 }
+.bottom-container {
+  position: fixed;
+  bottom: 0; /* Przypięcie do dołu */
+  left: 0;
+  right: 0;
+  padding: 10px; /* Możesz dostosować przestrzeń */
+}

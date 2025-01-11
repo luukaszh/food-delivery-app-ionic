@@ -8,6 +8,13 @@ import { FoodService } from 'src/app/services/food.service';
 import { ToastColor, ToastService } from 'src/app/services/toast.service';
 import { Food } from 'src/app/shared/models/food';
 
+export enum FoodCategory {
+  All = 'all',
+  Food = 'food',
+  Drinks = 'drinks',
+  Desserts = 'desserts'
+}
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
@@ -20,6 +27,9 @@ export class HomePage implements OnInit, OnDestroy {
   foodSubscription!: Subscription; // Subscription for food data
   averageRating: number = 0;
   sub: Subscription | undefined;
+
+  selectedCategory: string = FoodCategory.All;
+  categories: { key: string; value: string }[] = [];
 
   constructor(
     private foodService: FoodService,
@@ -36,6 +46,8 @@ export class HomePage implements OnInit, OnDestroy {
       console.log(serverFoods);
       this.foods = serverFoods.sort((a: Food, b: Food) => +a.id - +b.id);
     });
+
+    this.loadCategories();
   }
   OnDestroy(): void{
     console.log('HomePage | closed');
@@ -53,10 +65,15 @@ export class HomePage implements OnInit, OnDestroy {
     this.sub = this.foodService.sendRating(+foodId, event.detail).subscribe({
       next: async (res) => {
         await this.toastSrv.showToast('Thank you for your rating!', ToastColor.Primary);
-
-        
+  
+        // Pobierz wszystkie produkty i zastosuj filtrację dla wybranej kategorii
         this.sub = this.foodService.getAll().subscribe(res => {          
-          this.foods = res.sort((a: Food, b: Food) => +a.id - +b.id);
+          const category = this.selectedCategory !== 'all' ? this.selectedCategory : '';
+          const filteredFoods = category
+            ? res.filter((food: Food) => food.category === category)
+            : res;
+  
+          this.foods = filteredFoods.sort((a: Food, b: Food) => +a.id - +b.id);
         });
       },
       error: (err) => {
@@ -65,6 +82,7 @@ export class HomePage implements OnInit, OnDestroy {
       },
     });
   }
+  
 
   protected calculateAverageRating(ratings: number[]): number {
     if (!ratings || ratings.length === 0) return 0;
@@ -101,6 +119,30 @@ export class HomePage implements OnInit, OnDestroy {
     this.showAddedFoodToast(food);
   }
 
+  protected onCategoryChange(event: any) {
+    this.selectedCategory = event.detail.value;
+    this.loadFoods();
+  }
+
+  private loadFoods() {
+    this.foodService.getAll().subscribe((foods) => {
+      const filteredFoods = this.selectedCategory !== 'all'
+        ? foods.filter(food => food.category === this.selectedCategory)
+        : foods;
+  
+      this.foods = filteredFoods.sort((a, b) => +a.id - +b.id);
+    });
+  }
+
+  loadCategories(): void {
+    this.categories = Object.entries(FoodCategory).map(([key, value]) => ({
+      key,
+      value,
+    }));
+
+    this.loadFoods();
+  }
+  
   async showAddedFoodToast(foodData: Food) {
     // Show a toast notification with the food item's name indicating it has been added to the cart
     await this.toastController.create({
